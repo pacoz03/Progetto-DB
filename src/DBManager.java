@@ -12,7 +12,8 @@ public class DBManager {
     {
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql//localhost:2206/campionato";
+            String url = "jdbc:mysql://localhost:3306/campionato";
+
             String username = "root", psw = "root";
             con = DriverManager.getConnection(url,username,psw);
         }
@@ -47,7 +48,7 @@ public class DBManager {
                 for(int i = 0; i < ncolums; i++)
                 {
                     out[i] = rs.getString(i);
-                    System.out.print(out[i] + " ");
+                    System.out.print(out[i] + "\t");
                 }
                 System.out.println();
             }
