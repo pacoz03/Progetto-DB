@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class App extends JFrame{
-    private MenuPanel login;
+    private MenuPanel menuPanel;
 
     public App() {
         super();
@@ -13,6 +13,7 @@ public class App extends JFrame{
         setLocation(this.getToolkit().getScreenSize().width / 2 - this.getWidth() / 2,
                 this.getToolkit().getScreenSize().height / 2 - this.getHeight() / 2);
 
+        menuPanel = new MenuPanel();
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -26,9 +27,11 @@ public class App extends JFrame{
             }
         });
 
+        this.add(menuPanel);
+
     }
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
-        System.out.println("Ciao");
+        App app = new App();
+        app.setVisible(true);
     }
 }

@@ -1,7 +1,6 @@
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionEvent;
 
 public class Button1ActionListener implements ActionListener {

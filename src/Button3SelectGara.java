@@ -25,7 +25,7 @@ public class Button3SelectGara extends JPanel{
             for (Map.Entry<String, Object> entry : row.entrySet()) {
                 String columnName = entry.getKey();
                 Object columnValue = entry.getValue();
-                System.out.print(columnName + ": " + columnValue + " | ");
+                //System.out.print(columnName + ": " + columnValue + " | ");
 
                 info += columnName + ": " + columnValue + " | ";
             }
@@ -36,6 +36,8 @@ public class Button3SelectGara extends JPanel{
         partecipazioni.setSelectedIndex(0);
 
         submitButton = new JButton("Submit");
+
+        /* Verificare se la selezione dei valori nella combo box può essere effetuato usando lindice dello stesso in corrispondenza con la entry della lista di partecipazioni */
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,6 +53,7 @@ public class Button3SelectGara extends JPanel{
                     // Stampa i numeri
                     System.out.println("Vettura: " + vetturaNumber);
                     System.out.println("Gara: " + garaNumber);
+                    
                     JOptionPane test = new JOptionPane(new Button3Update(garaNumber,vetturaNumber));
                     test.createDialog("Inserimento di un risultato").setVisible(true);
                 }
