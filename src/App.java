@@ -28,9 +28,7 @@ public class App extends JFrame{
 
     }
     public static void main(String[] args) throws Exception {
-        DbConnection.getConnection();
-        App app = new App();
-        app.setVisible(true);
+        System.out.println("Hello, World!");
+        System.out.println("Ciao");
     }
 }
-
