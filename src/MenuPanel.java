@@ -67,7 +67,7 @@ public class MenuPanel extends JPanel {
 
         add(buttons);
 
-        button1.addActionListener(new Button1ActionListener(button1));
+        button1.addActionListener(new Button1ActionListener());
         button2.addActionListener(new Button2ActionListener(button2));
         button3.addActionListener(new Button3ActionListener());
         
