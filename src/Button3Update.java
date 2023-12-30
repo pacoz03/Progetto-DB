@@ -52,7 +52,7 @@ public class Button3Update extends JPanel {
 
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DbConnection.executeUpdate("UPDATE partecipazione\r\n" + //
+            int result = DBManager.executeUpdate("UPDATE partecipazione\r\n" + //
                     "SET esito = '"+ inputData.get("esito") +"', posizione = "+inputData.get("posizione")+", punteggio ="+ inputData.get("punteggio")+"\r\n" + //
                     "WHERE gara = "+ gara+" AND vettura = "+ veicolo+";");
 

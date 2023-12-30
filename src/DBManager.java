@@ -3,14 +3,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public class DbConnection {
+public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
     private static final String USER = "root";
     private static final String PASSWORD = "root";
     private static Connection connection;
 
     // Costruttore privato per impedire la creazione di istanze esterne
-    private DbConnection() {
+    private DBManager() {
     }
 
 

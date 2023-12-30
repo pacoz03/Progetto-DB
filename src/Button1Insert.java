@@ -50,7 +50,7 @@ public class Button1Insert extends JPanel {
         }
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DbConnection.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
+            int result = DBManager.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
                     "VALUES (" +
                     inputData.get("vettura") + ", '" + 
                     inputData.get("costruttore") + "', '" + 

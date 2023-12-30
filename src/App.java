@@ -20,7 +20,7 @@ public class App extends JFrame{
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
                     System.out.println("Closing connection...");
-                    DbConnection.closeConnection();
+                    DBManager.closeConnection();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
