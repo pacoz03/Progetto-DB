@@ -1,30 +1,77 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.*;
-
-
 public class Button2 extends JPanel {
+    private Map<String, JTextField> inputFields;
     public Button2() {
         super();
-        List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        //Inserisci il risultato in selectResult
-        try {
-            selectResult = DBManager.executeQuery("SELECT scuderia.nome, COUNT(gentleman.codice) * 100 / COUNT(pilota.codice) AS percentualeGentleman\r\n" + //
-                    "FROM scuderia \tJOIN vettura ON scuderia.nome = vettura.scuderia\r\n" + //
-                    "\t\t\t\tJOIN pilota ON vettura.ngara = pilota.vettura\r\n" + //
-                    "                LEFT JOIN gentleman ON pilota.codice = gentleman.codice\r\n" + //
-                    "GROUP BY scuderia.nome;");
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+        inputFields = new HashMap<>();
+
+        setLayout(new GridLayout(11, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // Definisci la struttura della query SQL
+        String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
+
+        for (String columnName : columnNames) {
+            JLabel label = new JLabel(columnName + ":");
+            JTextField textField = new JTextField();
+            inputFields.put(columnName, textField);
+
+            add(label);
+            add(textField);
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Scuderia", "Percentuale di Gentleman"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleSubmit();
+            }
+        });
+
+        add(new JLabel()); // Empty label as a filler
+        add(submitButton);
+    }
+    
+    private void handleSubmit() {
+        // Esegui l'azione di invio dei dati
+        // Recupera i valori inseriti nei campi di input
+        Map<String, Object> inputData = new HashMap<>();
+        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
+            String columnName = entry.getKey();
+            Object value = entry.getValue().getText();
+            inputData.put(columnName, value);
+        }
+        try {
+            // Utilizza i valori recuperati per eseguire l'inserimento nel database
+            int result = DBManager.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
+                    "VALUES (" +
+                    inputData.get("vettura") + ", '" + 
+                    inputData.get("costruttore") + "', '" + 
+                    inputData.get("dataCreazione") + "', " + 
+                    inputData.get("cilindrata") + ", '" + 
+                    inputData.get("tipomotore") + "', " + 
+                    inputData.get("ncilindri") + ", '" + 
+                    inputData.get("materiale") + "', " + 
+                    inputData.get("nmarce") + ", " + 
+                    inputData.get("peso") + ", '" + 
+                    inputData.get("tipocomponente") + "');");
+
+                if (result == 1) {
+                    // Visualizza un messaggio di successo
+                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                }
+        } catch (SQLException e1) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+            e1.printStackTrace();
+        }
+        System.out.println("Dati inseriti: " + inputData);
     }
 }

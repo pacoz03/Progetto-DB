@@ -1,23 +1,21 @@
-import java.awt.GridLayout;
-import java.awt.event.*;
-import java.sql.*;
-import java.util.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Button3Update extends JPanel {
+public class Button1 extends JPanel{
     private Map<String, JTextField> inputFields;
-    JButton submitButton;
-    
-    public Button3Update(String gara, String veicolo){
-        super();
-        System.out.println(gara+veicolo);
-        inputFields = new HashMap<String, JTextField>();
+    public Button1(){
+        inputFields = new HashMap<>();
 
-        setLayout(new GridLayout(4, 2, 10, 10));
+        setLayout(new GridLayout(11, 2, 10, 10));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Definisci la struttura della query SQL
-        String[] columnNames = {"esito","posizione","punteggio"};
+        String[] columnNames = {"nome", "sede"};
 
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName + ":");
@@ -28,33 +26,33 @@ public class Button3Update extends JPanel {
             add(textField);
         }
 
-        submitButton = new JButton("Submit");
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSubmit(gara,veicolo);
+                handleSubmit();
             }
         });
 
         add(new JLabel()); // Empty label as a filler
         add(submitButton);
-
     }
-
     
-    private void handleSubmit(String gara,String veicolo) {
+    private void handleSubmit() {
+        // Esegui l'azione di invio dei dati
+        // Recupera i valori inseriti nei campi di input
         Map<String, Object> inputData = new HashMap<>();
         for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();
             inputData.put(columnName, value);
-        } 
-
+        }
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("UPDATE partecipazione\r\n" + //
-                    "SET esito = '"+ inputData.get("esito") +"', posizione = "+inputData.get("posizione")+", punteggio ="+ inputData.get("punteggio")+"\r\n" + //
-                    "WHERE gara = "+ gara+" AND vettura = "+ veicolo+";");
+            int result = DBManager.executeUpdate("INSERT INTO componente (nome, sede)" +
+                    "VALUES ('" +
+                    inputData.get("nome") + "', '" + 
+                    inputData.get("sede") + "');");
 
                 if (result == 1) {
                     // Visualizza un messaggio di successo
@@ -65,8 +63,6 @@ public class Button3Update extends JPanel {
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
         }
+        System.out.println("Dati inseriti: " + inputData);
     }
-/*     public HashMap<String,Object> getUpdatableData(String gara,String veicolo){
-
-    } */
 }
