@@ -67,9 +67,27 @@ public class MenuPanel extends JPanel {
 
         add(buttons);
 
-        button1.addActionListener(new Button1ActionListener(button1));
-        button2.addActionListener(new Button2ActionListener(button2));
-        button3.addActionListener(new Button3ActionListener());
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button1Insert());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button2());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button3SelectGara());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
         
     }
 }

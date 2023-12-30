@@ -38,7 +38,7 @@ public class Button1Insert extends JPanel {
         add(new JLabel()); // Empty label as a filler
         add(submitButton);
     }
-
+    
     private void handleSubmit() {
         // Esegui l'azione di invio dei dati
         // Recupera i valori inseriti nei campi di input
