@@ -18,7 +18,7 @@ public class Button1ActionListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        createOptionPanel(); 
+        createOptionPanel();
     }
 
     public void createOptionPanel() {

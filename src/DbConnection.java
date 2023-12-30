@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 public class DbConnection {
-    private static final String JDBC_URL = "jdbc:mysql://127.0.0.1:3306/campionato";
-    private static final String USER = "admin";
-    private static final String PASSWORD = "admin";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
     private static Connection connection;
 
     // Costruttore privato per impedire la creazione di istanze esterne
@@ -17,11 +17,36 @@ public class DbConnection {
     // Metodo per ottenere l'istanza condivisa della connessione al database
     public static Connection getConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
-            System.out.println("Connected to database");
             // Crea una nuova connessione se non esiste o è chiusa
-            connection = java.sql.DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Connected to database");
         }
         return connection;
+    }
+
+    public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in)
+    {
+        ArrayList<ArrayList<Object>> tempData = new ArrayList<ArrayList<Object>>();
+        //Per ogni nodo della lista (tupla)
+        for (Map<String, Object> row : in) {
+            //Crea un ArrayList dove inserire tutti i valori della tupla
+            ArrayList<Object> temp = new ArrayList<>();
+            //Per ogni entry della mappa (coppia {nome colonna, valore})
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
+                //Prendi il valore ed inseriscilo nell'ArrayList
+                Object columnValue = entry.getValue();
+                temp.add(0, columnValue);
+            }
+            tempData.add(temp);
+        }
+        //Converti in una matrice di Object
+        Object[][] out = new Object[tempData.size()][];
+        int i = 0;
+        for(ArrayList<Object> x : tempData) {
+            out[i] = x.toArray();
+            i++;
+        }
+        return out;
     }
 
 
