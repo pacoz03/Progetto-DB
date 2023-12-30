@@ -1,25 +1,13 @@
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 
-import java.awt.event.ActionEvent;
 
-public class Button2ActionListener implements ActionListener {
-    ArrayList<ArrayList<String>> result;
-    public Button2ActionListener(JButton button) {
+public class Button2 extends JPanel {
+    public Button2() {
         super();
-        result = new ArrayList<ArrayList<String>>();
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e){
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
@@ -37,7 +25,6 @@ public class Button2ActionListener implements ActionListener {
         String[] col = new String[]{"Scuderia", "Percentuale di Gentleman"};
         JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
-        JOptionPane pane = new JOptionPane(scrollPane);
-        pane.createDialog("Output").setVisible(true);
+        this.add(scrollPane);
     }
 }

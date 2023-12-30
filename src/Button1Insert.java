@@ -1,33 +1,19 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-
-public class Button1ActionListener implements ActionListener {
+public class Button1Insert extends JPanel {
     private Map<String, JTextField> inputFields;
-
-    @Override
-    public void actionPerformed(ActionEvent e){
-        createOptionPanel();
-    }
-
-    public void createOptionPanel() {
-        JPanel panel = new JPanel();
-        JOptionPane test = new JOptionPane(panel);
+    public Button1Insert() {
+        super();
         inputFields = new HashMap<>();
 
-        panel.setLayout(new GridLayout(11, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setLayout(new GridLayout(11, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Definisci la struttura della query SQL
         String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
@@ -37,8 +23,8 @@ public class Button1ActionListener implements ActionListener {
             JTextField textField = new JTextField();
             inputFields.put(columnName, textField);
 
-            panel.add(label);
-            panel.add(textField);
+            add(label);
+            add(textField);
         }
 
         JButton submitButton = new JButton("Submit");
@@ -49,11 +35,10 @@ public class Button1ActionListener implements ActionListener {
             }
         });
 
-        panel.add(new JLabel()); // Empty label as a filler
-        panel.add(submitButton); 
-        test.createDialog("Inserimento dati").setVisible(true);
+        add(new JLabel()); // Empty label as a filler
+        add(submitButton);
     }
-
+    
     private void handleSubmit() {
         // Esegui l'azione di invio dei dati
         // Recupera i valori inseriti nei campi di input
@@ -80,11 +65,11 @@ public class Button1ActionListener implements ActionListener {
 
                 if (result == 1) {
                     // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(null, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
                 }
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(null, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
         }
         System.out.println("Dati inseriti: " + inputData);
