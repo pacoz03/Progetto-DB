@@ -3,10 +3,6 @@ import java.sql.*;
 public class DBManager {
     Connection con;
     
-    public DBManager()
-    {
-        con = null;
-    }
 
     public boolean connect()
     {
