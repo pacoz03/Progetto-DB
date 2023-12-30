@@ -5,12 +5,12 @@ import java.sql.SQLException;
 import java.util.regex.*;
 import javax.swing.*;
 
-public class Button3SelectGara extends JPanel{
+public class Button6SelectGara extends JPanel{
     JButton submitButton;
     JComboBox<String> partecipazioni;
     List<Map<String,Object>> partecip;
 
-    public Button3SelectGara(){
+    public Button6SelectGara(){
         super();
         
         setLayout(new GridLayout(4, 2, 10, 10));
@@ -54,7 +54,7 @@ public class Button3SelectGara extends JPanel{
                     System.out.println("Vettura: " + vetturaNumber);
                     System.out.println("Gara: " + garaNumber);
                     
-                    JOptionPane test = new JOptionPane(new Button3Update(garaNumber,vetturaNumber));
+                    JOptionPane test = new JOptionPane(new Button6Update(garaNumber,vetturaNumber));
                     test.createDialog("Inserimento di un risultato").setVisible(true);
                 }
             }

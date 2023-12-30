@@ -1,22 +1,23 @@
+import java.awt.GridLayout;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Button1Insert extends JPanel {
+public class Button6Update extends JPanel {
     private Map<String, JTextField> inputFields;
-    public Button1Insert() {
+    JButton submitButton;
+    
+    public Button6Update(String gara, String veicolo){
         super();
-        inputFields = new HashMap<>();
+        System.out.println(gara+veicolo);
+        inputFields = new HashMap<String, JTextField>();
 
-        setLayout(new GridLayout(11, 2, 10, 10));
+        setLayout(new GridLayout(4, 2, 10, 10));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Definisci la struttura della query SQL
-        String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
+        String[] columnNames = {"esito","posizione","punteggio"};
 
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName + ":");
@@ -27,41 +28,33 @@ public class Button1Insert extends JPanel {
             add(textField);
         }
 
-        JButton submitButton = new JButton("Submit");
+        submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSubmit();
+                handleSubmit(gara,veicolo);
             }
         });
 
         add(new JLabel()); // Empty label as a filler
         add(submitButton);
+
     }
+
     
-    private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
+    private void handleSubmit(String gara,String veicolo) {
         Map<String, Object> inputData = new HashMap<>();
         for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();
             inputData.put(columnName, value);
-        }
+        } 
+
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
-                    "VALUES (" +
-                    inputData.get("vettura") + ", '" + 
-                    inputData.get("costruttore") + "', '" + 
-                    inputData.get("dataCreazione") + "', " + 
-                    inputData.get("cilindrata") + ", '" + 
-                    inputData.get("tipomotore") + "', " + 
-                    inputData.get("ncilindri") + ", '" + 
-                    inputData.get("materiale") + "', " + 
-                    inputData.get("nmarce") + ", " + 
-                    inputData.get("peso") + ", '" + 
-                    inputData.get("tipocomponente") + "');");
+            int result = DBManager.executeUpdate("UPDATE partecipazione\r\n" + //
+                    "SET esito = '"+ inputData.get("esito") +"', posizione = "+inputData.get("posizione")+", punteggio ="+ inputData.get("punteggio")+"\r\n" + //
+                    "WHERE gara = "+ gara+" AND vettura = "+ veicolo+";");
 
                 if (result == 1) {
                     // Visualizza un messaggio di successo
@@ -72,6 +65,8 @@ public class Button1Insert extends JPanel {
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
         }
-        System.out.println("Dati inseriti: " + inputData);
     }
+/*     public HashMap<String,Object> getUpdatableData(String gara,String veicolo){
+
+    } */
 }
