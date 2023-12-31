@@ -8,7 +8,7 @@ public class App extends JFrame{
         setTitle("Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
-        setSize(500, 900);
+        setSize(1440, 900);
         setVisible(true);
         setLocation(this.getToolkit().getScreenSize().width / 2 - this.getWidth() / 2,
                 this.getToolkit().getScreenSize().height / 2 - this.getHeight() / 2);

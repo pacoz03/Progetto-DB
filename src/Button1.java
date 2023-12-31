@@ -10,12 +10,12 @@ public class Button1 extends JPanel{
     private Map<String, JTextField> inputFields;
     public Button1(){
         inputFields = new HashMap<>();
-
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
         // Definisci la struttura della query SQL
         String[] columnNames = {"nome", "sede"};
+
+        setLayout(new GridLayout(columnNames.length + 1, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
 
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName + ":");
@@ -33,7 +33,6 @@ public class Button1 extends JPanel{
                 handleSubmit();
             }
         });
-
         add(new JLabel()); // Empty label as a filler
         add(submitButton);
     }

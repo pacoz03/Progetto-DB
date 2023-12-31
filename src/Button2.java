@@ -11,12 +11,12 @@ public class Button2 extends JPanel {
     public Button2() {
         super();
         inputFields = new HashMap<>();
-
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
         // Definisci la struttura della query SQL
         String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
+
+        setLayout(new GridLayout(columnNames.length + 1, 2, 10, 10));
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
 
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName + ":");
