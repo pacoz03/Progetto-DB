@@ -12,20 +12,11 @@ public class DBManager {
     public DBManager()
     {
         try {
-            connection = getConnection();    
+            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
+            System.out.println("Connected to database");   
         } catch (Exception e) {
             System.err.println("Error while connecting to database.");
         }
-    }
-
-    // Metodo per ottenere l'istanza condivisa della connessione al database
-    public static Connection getConnection() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            // Crea una nuova connessione se non esiste o è chiusa
-            connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Connected to database");
-        }
-        return connection;
     }
 
     public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in)
