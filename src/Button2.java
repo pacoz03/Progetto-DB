@@ -7,10 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Button2 extends JPanel {
-    private Map<String, Object> inputData;
+    private Map<String, JTextField> inputFields;
+    private JTextField textFields[];
     
     public Button2() {
-        inputData = new HashMap<>();
+        inputFields = new HashMap<>();
         // Definisci la struttura della query SQL
         String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
         
@@ -20,13 +21,18 @@ public class Button2 extends JPanel {
         //Creazione e riempimento Panel per le colonne
         JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
         JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        textFields = new JTextField[columnNames.length];
+        int i = 0;
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
             namesPanel.add(label);
             
-            JTextField textField = new JTextField();
-            textField.setPreferredSize(new Dimension(300,30));
-            textPanel.add(textField);
+            textFields[i] = new JTextField();
+            textFields[i].setPreferredSize(new Dimension(300,30));
+            textPanel.add(textFields[i]);
+
+            inputFields.put(columnName,textFields[i]);
+            i++;
         }
 
         //Creazione di un box panel dove inserire le colonne
@@ -54,6 +60,15 @@ public class Button2 extends JPanel {
     }
     
     private void handleSubmit() {
+        // Esegui l'azione di invio dei dati
+        // Recupera i valori inseriti nei campi di input
+        Map<String, Object> inputData = new HashMap<>();
+        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
+            String columnName = entry.getKey();
+            Object value = entry.getValue().getText();
+            System.out.println(value);
+            inputData.put(columnName, value);
+        }
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
             int result = DBManager.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
