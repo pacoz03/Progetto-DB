@@ -9,10 +9,14 @@ public class DBManager {
     private static final String PASSWORD = "root";
     private static Connection connection;
 
-    // Costruttore privato per impedire la creazione di istanze esterne
-    private DBManager() {
+    public DBManager()
+    {
+        try {
+            connection = getConnection();    
+        } catch (Exception e) {
+            System.err.println("Error while connecting to database.");
+        }
     }
-
 
     // Metodo per ottenere l'istanza condivisa della connessione al database
     public static Connection getConnection() throws SQLException {
@@ -53,7 +57,7 @@ public class DBManager {
     public static List<Map<String, Object>> executeQuery(String query) throws SQLException {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
-        try (Connection connection = getConnection();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -107,8 +111,8 @@ public class DBManager {
     // Metodo per eseguire un'operazione di insert, update o delete
     public static int executeUpdate(String query) throws SQLException {
         System.out.println("Executing update: " + query);
-        try (Connection connection = getConnection();
-                Statement preparedStatement = connection.createStatement()) {
+        try (Statement preparedStatement = connection.createStatement()) 
+            {
             // Esegue l'operazione e restituisce il numero di righe interessate
             return preparedStatement.executeUpdate(query);
         }
@@ -123,17 +127,3 @@ public class DBManager {
     }
 
 }
-
-/* 
-class DbConnectionException extends SQLException {
-    public DbConnectionException(String message) {
-        super(message);
-    }
-}
-
-class DbUpdateException extends DbConnectionException {
-    public DbUpdateException(String message) {
-        super(message);
-    }
-} */
-

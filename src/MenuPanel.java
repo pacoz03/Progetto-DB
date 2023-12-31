@@ -12,9 +12,10 @@ public class MenuPanel extends JPanel {
     private JScrollPane buttonsScrollPane;
     
     public MenuPanel() {
-        super();
+        new DBManager();
+
         //layout del panel principale
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
         /*CREAZIONE SCROLLPANE PER I PULSANTI */
         buttonsPanel = new JPanel(new GridLayout(15,1,5,5));
@@ -42,7 +43,9 @@ public class MenuPanel extends JPanel {
         add(outputPanel);
         /*FINE CREAZIONE PANEL DI OUTPUT */
         
-        //L'indice del pulsante n equivale a n-1. es. Button1 = buttons[0]
+        //ButtonN equivale a buttons[n-1]. es. Button1 = buttons[0]
+
+        //Button1
         buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

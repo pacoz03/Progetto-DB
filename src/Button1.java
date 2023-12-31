@@ -71,7 +71,7 @@ public class Button1 extends JPanel{
         }
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO scuderia (nome,sede)" +
+            int result = DBManager.executeUpdate("INSERT INTO scuderia (nome,sede)" + 
                     "VALUES ('" +
                     inputData.get("nome") + "', '" + 
                     inputData.get("sede") + "');"); 
