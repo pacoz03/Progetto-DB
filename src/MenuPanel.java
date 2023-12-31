@@ -87,6 +87,7 @@ public class MenuPanel extends JPanel {
         //Aggiungi il nuovo panel
         p.setAlignmentX(LEFT_ALIGNMENT);
         p.setAlignmentY(TOP_ALIGNMENT);
+        p.setPreferredSize(new Dimension(outputPanel.getWidth(), outputPanel.getHeight()));
         outputPanel.add(p);
         outputPanel.setVisible(false);
         outputPanel.setVisible(true);
