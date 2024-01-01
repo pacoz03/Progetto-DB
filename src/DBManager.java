@@ -10,19 +10,14 @@ public class DBManager {
     private static final String PASSWORD = "admin";
     private static Connection connection;
 
-    // Costruttore privato per impedire la creazione di istanze esterne
-    private DBManager() {
-    }
-
-
-    // Metodo per ottenere l'istanza condivisa della connessione al database
-    public static Connection getConnection() throws SQLException {
-        if (connection == null || connection.isClosed()) {
-            // Crea una nuova connessione se non esiste o è chiusa
+    public DBManager()
+    {
+        try {
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
-            System.out.println("Connected to database");
+            System.out.println("Connected to database");   
+        } catch (Exception e) {
+            System.err.println("Error while connecting to database.");
         }
-        return connection;
     }
 
     public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in)
@@ -55,7 +50,7 @@ public class DBManager {
     public static List<Map<String, Object>> executeQuery(String query) throws SQLException {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
-        try (Connection connection = getConnection();
+        try (
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -66,7 +61,7 @@ public class DBManager {
             // Popolare la lista con i risultati della query
             while (resultSet.next()) {
                 // Creare una mappa per la riga corrente
-                Map<String, Object> resultRow = new HashMap<>();
+                Map<String, Object> resultRow = new LinkedHashMap<>();
 
                 // Popolare la mappa con i risultati della riga corrente
                 for (int i = 1; i <= columnCount; i++) {
@@ -109,8 +104,8 @@ public class DBManager {
     // Metodo per eseguire un'operazione di insert, update o delete
     public static int executeUpdate(String query) throws SQLException {
         System.out.println("Executing update: " + query);
-        try (Connection connection = getConnection();
-                Statement preparedStatement = connection.createStatement()) {
+        try (Statement preparedStatement = connection.createStatement()) 
+            {
             // Esegue l'operazione e restituisce il numero di righe interessate
             return preparedStatement.executeUpdate(query);
         }
@@ -125,17 +120,3 @@ public class DBManager {
     }
 
 }
-
-/* 
-class DbConnectionException extends SQLException {
-    public DbConnectionException(String message) {
-        super(message);
-    }
-}
-
-class DbUpdateException extends DbConnectionException {
-    public DbUpdateException(String message) {
-        super(message);
-    }
-} */
-
