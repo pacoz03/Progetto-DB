@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Button2 extends JPanel {
@@ -11,7 +12,7 @@ public class Button2 extends JPanel {
     private JTextField textFields[];
     
     public Button2() {
-        inputFields = new HashMap<>();
+        inputFields = new LinkedHashMap<>();
         // Definisci la struttura della query SQL
         String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
         

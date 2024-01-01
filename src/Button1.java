@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Button1 extends JPanel{
@@ -62,7 +63,7 @@ public class Button1 extends JPanel{
     private void handleSubmit() {
         // Esegui l'azione di invio dei dati
         // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
+        Map<String, Object> inputData = new LinkedHashMap<String,Object>();
         for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();

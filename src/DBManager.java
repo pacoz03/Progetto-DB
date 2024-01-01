@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 public class DBManager {
@@ -59,7 +60,7 @@ public class DBManager {
             // Popolare la lista con i risultati della query
             while (resultSet.next()) {
                 // Creare una mappa per la riga corrente
-                Map<String, Object> resultRow = new HashMap<>();
+                Map<String, Object> resultRow = new LinkedHashMap<>();
 
                 // Popolare la mappa con i risultati della riga corrente
                 for (int i = 1; i <= columnCount; i++) {
