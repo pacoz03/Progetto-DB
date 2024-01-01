@@ -41,11 +41,51 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button3());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button4());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
         //Button6
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane jop = new JOptionPane(new Button6SelectGara());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[7].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button8());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[8].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button9());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[9].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button10());
                 jop.createDialog("Inserimeto dati").setVisible(true);
             }
         });
@@ -58,6 +98,42 @@ public class MenuPanel extends JPanel {
                 jop.createDialog("Inserimeto dati").setVisible(true);
             }
         });
+
+        buttons[11].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button12());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[12].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button13());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[13].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button14());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        buttons[14].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane jop = new JOptionPane(new Button15());
+                jop.createDialog("Inserimeto dati").setVisible(true);
+            }
+        });
+
+        
+
+
         
     }
 }

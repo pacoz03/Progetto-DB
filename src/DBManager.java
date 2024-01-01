@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String USER = "admin";
+    private static final String PASSWORD = "admin";
     private static Connection connection;
 
     // Costruttore privato per impedire la creazione di istanze esterne
