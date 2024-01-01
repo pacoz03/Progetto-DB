@@ -11,7 +11,7 @@ public class Button15 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT scuderia.nome, AVG(rapporto.puntiAlMinuto)\r\n" + 
+            selectResult = DBManager.executeQuery("SELECT scuderia.nome, AVG(rapporto.puntiAlMinuto) as puntialminuto\r\n" + 
                     "FROM scuderia JOIN (SELECT vettura.scuderia, vettura.ngara, vettura.punteggiototale / COALESCE( (SUM(gara.durata) * 60) , 1) AS puntiAlMinuto\r\n" + 
                     "FROM  vettura LEFT JOIN partecipazione ON vettura.ngara = partecipazione.vettura\r\n" + 
                     "LEFT JOIN gara ON partecipazione.gara = gara.codice\r\n" + 
@@ -21,6 +21,16 @@ public class Button15 extends JPanel {
         } catch (SQLException e1) {
             // TODO: handle exception
             System.out.println(e1.getMessage());
+        }
+
+        // Stampa la lista di mappe
+        for (Map<String, Object> resultRow : selectResult) {
+            for (Map.Entry<String, Object> entry : resultRow.entrySet()) {
+                String columnName = entry.getKey();
+                Object value = entry.getValue();
+                System.out.println(columnName + ": " + value);
+            }
+            System.out.println("----------"); // Separatore tra le righe
         }
 
         Object[][] data = DBManager.convertToObjectMatrix(selectResult);

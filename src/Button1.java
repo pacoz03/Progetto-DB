@@ -8,24 +8,40 @@ import java.util.Map;
 
 public class Button1 extends JPanel{
     private Map<String, JTextField> inputFields;
-    public Button1(){
+    private JTextField textFields[];
+    
+    public Button1() {
         inputFields = new HashMap<>();
-
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
         // Definisci la struttura della query SQL
-        String[] columnNames = {"nome", "sede"};
-
+        String[] columnNames = {"nome","sede"};
+        
+        //Set Layout della classe
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
+        //Creazione e riempimento Panel per le colonne
+        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        textFields = new JTextField[columnNames.length];
+        int i = 0;
         for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
+            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
+            namesPanel.add(label);
+            
+            textFields[i] = new JTextField();
+            textFields[i].setPreferredSize(new Dimension(300,30));
+            textPanel.add(textFields[i]);
 
-            add(label);
-            add(textField);
+            inputFields.put(columnName,textFields[i]);
+            i++;
         }
 
+        //Creazione di un box panel dove inserire le colonne
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
+        boxPanel.add(namesPanel);
+        boxPanel.add(textPanel);
+        
+        //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -33,9 +49,14 @@ public class Button1 extends JPanel{
                 handleSubmit();
             }
         });
+        
+        //Creazione mainPanel per utilizzare il border Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(boxPanel, BorderLayout.CENTER);
+        mainPanel.add(submitButton,BorderLayout.SOUTH);
 
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
+        //Aggiungi al panel della classe il mainPanel
+        this.add(mainPanel);
     }
     
     private void handleSubmit() {
@@ -45,14 +66,15 @@ public class Button1 extends JPanel{
         for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();
+            System.out.println(value);
             inputData.put(columnName, value);
         }
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO componente (nome, sede)" +
+            int result = DBManager.executeUpdate("INSERT INTO scuderia (nome,sede)" + 
                     "VALUES ('" +
                     inputData.get("nome") + "', '" + 
-                    inputData.get("sede") + "');");
+                    inputData.get("sede") + "');"); 
 
                 if (result == 1) {
                     // Visualizza un messaggio di successo

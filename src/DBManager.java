@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 public class DBManager {
@@ -34,6 +35,7 @@ public class DBManager {
             //Per ogni entry della mappa (coppia {nome colonna, valore})
             for (Map.Entry<String, Object> entry : row.entrySet()) {
                 //Prendi il valore ed inseriscilo nell'ArrayList
+                System.out.println(entry.getKey() + " " + entry.getValue());
                 Object columnValue = entry.getValue();
                 temp.add(0, columnValue);
             }
