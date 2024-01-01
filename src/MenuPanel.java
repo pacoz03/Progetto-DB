@@ -1,9 +1,5 @@
 import javax.swing.*;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MenuPanel extends JPanel {
