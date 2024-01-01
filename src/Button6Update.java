@@ -43,7 +43,7 @@ public class Button6Update extends JPanel {
 
     
     private void handleSubmit(String gara,String veicolo) {
-        Map<String, Object> inputData = new HashMap<>();
+        Map<String, Object> inputData = new LinkedHashMap<String,Object>();
         for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();

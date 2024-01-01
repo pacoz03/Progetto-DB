@@ -1,34 +1,51 @@
 import javax.swing.*;
-
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
 
 public class MenuPanel extends JPanel {
     private JButton[] buttons = new JButton[15];
-    private JPanel panel;
+    private JPanel buttonsPanel, outputPanel;
+    private JScrollPane buttonsScrollPane;
     
     public MenuPanel() {
-        super();
+        new DBManager();
 
-        setLayout(new GridLayout(2, 1));
-        panel = new JPanel(new GridLayout(4, 4,5,5));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        //layout del panel principale
+        this.setLayout(new BorderLayout());
 
+        /*CREAZIONE SCROLLPANE PER I PULSANTI */
+        buttonsPanel = new JPanel(new GridLayout(15,1,5,5));
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        //aggiunta dei pulsanti al panel
         for(int i = 0; i < 15; i++)
         {
             buttons[i] = new JButton("Button" + (i+1));
-            panel.add(buttons[i]);
+            buttons[i].setPreferredSize(new Dimension(100,50));
+            buttonsPanel.add(buttons[i]);
         }
+        //istanziamento dello scrollpane e aggiunta del panel ad esso
+        buttonsScrollPane = new JScrollPane(buttonsPanel);
+        buttonsScrollPane.setPreferredSize(new Dimension(200,getHeight()));
+        buttonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        add(buttonsScrollPane,BorderLayout.WEST);
+        /*FINE CREAZIONE SCROLLPANE PER PULSANTI */
+        
+        /*CREAZIONE PANEL DI OUTPUT */
+        outputPanel = new JPanel(new BorderLayout());
+        
+        outputPanel.setBackground(Color.BLUE);
+        outputPanel.setOpaque(true);
+        add(outputPanel);
+        /*FINE CREAZIONE PANEL DI OUTPUT */
+        
+        //ButtonN equivale a buttons[n-1]. es. Button1 = buttons[0]
 
-        add(panel);
-
-        //L'indice del pulsante n equivale a n-1. es. Button1 = buttons[0]
-
+        //Button1
         buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button1());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button1());
             }
         });
 
@@ -36,8 +53,7 @@ public class MenuPanel extends JPanel {
         buttons[1].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button2());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button2());
             }
         });
 
@@ -61,8 +77,7 @@ public class MenuPanel extends JPanel {
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button6SelectGara());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button6SelectGara());
             }
         });
 
@@ -94,8 +109,7 @@ public class MenuPanel extends JPanel {
         buttons[10].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button11());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button11());
             }
         });
 
@@ -135,5 +149,22 @@ public class MenuPanel extends JPanel {
 
 
         
+    }
+
+    private void addPanelToOutput(JPanel p)
+    {
+        //Rimuovi gli altri panel
+        if(outputPanel.getComponentCount() > 0)
+        {
+            outputPanel.removeAll();
+        }
+
+        //Aggiungi il nuovo panel
+        p.setAlignmentX(LEFT_ALIGNMENT);
+        p.setAlignmentY(TOP_ALIGNMENT);
+        p.setPreferredSize(new Dimension(outputPanel.getWidth(), outputPanel.getHeight()));
+        outputPanel.add(p);
+        outputPanel.setVisible(false);
+        outputPanel.setVisible(true);
     }
 }
