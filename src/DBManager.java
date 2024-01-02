@@ -1,9 +1,6 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
     private static final String USER = "admin";
