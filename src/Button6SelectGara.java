@@ -1,9 +1,9 @@
-import java.awt.GridLayout;
+import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.regex.*;
-import javax.swing.*;
+import java.awt.GridLayout;
 
 public class Button6SelectGara extends JPanel{
     JButton submitButton;

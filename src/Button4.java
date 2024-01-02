@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.event.*;
+import java.sql.*;
+import java.util.*;
 
 public class Button4 extends JPanel {
     private Map<String, JTextField> inputFields;

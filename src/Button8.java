@@ -1,9 +1,6 @@
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
+import java.sql.*;
+import java.util.*;
 import javax.swing.*;
-
 
 public class Button8 extends JPanel {
     public Button8() {
