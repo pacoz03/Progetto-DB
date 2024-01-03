@@ -14,7 +14,7 @@ public class Button1 extends JPanel{
         panelManager = new PanelManager();
         panelManager.createPanel(
             "nome", PanelManager.getJTextField(),
-            "sede", PanelManager.getJComboBox("op1", "op2", "op3")
+            "sede", PanelManager.getJTextField()
         );
         
         //Creazione del bottone Submit
@@ -34,7 +34,7 @@ public class Button1 extends JPanel{
         try {
             PreparedStatement query = DBManager.createInsertQuery("scuderia", columnNames);
             query.setObject(1, ((JTextField)panelManager.inputFields.get("nome")).getText());
-            query.setObject(2, ((JComboBox)panelManager.inputFields.get("sede")).getSelectedItem());
+            query.setObject(2, ((JTextField)panelManager.inputFields.get("sede")).getText());
             
             DBManager.executeUpdate(query);
         } catch (SQLException e1) {
