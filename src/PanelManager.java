@@ -25,11 +25,6 @@ public class PanelManager extends JPanel{
         return t;
     }
 
-    public static JScrollPane getJScrollPane(){
-        JScrollPane t = new JScrollPane();
-        return t;
-    }
-
     public static JComboBox<String> getJComboBox(String... options){
         JComboBox<String> t = new JComboBox<String>();
         for (String s : options) {
@@ -41,7 +36,7 @@ public class PanelManager extends JPanel{
     /*Restituisce un JPanel, con layout "Border", per l'inserimento dei dati dei campi contenuri in columnNames.
      * inputFields e textFields sono parametri di output in cui vengono lasciati i valori inseriti dall'utente
      */
-    public void createPanel(Object... objects){
+    public void createInsertPanel(Object... objects){
         if(objects.length % 2 != 0)
         {
             System.out.println("Il numero di ogetti deve essere pari");

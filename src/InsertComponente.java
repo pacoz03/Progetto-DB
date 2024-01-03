@@ -14,7 +14,7 @@ public class InsertComponente extends JPanel {
         
         //Creazione del panel di insert
         panelManager = new PanelManager();
-        panelManager.createPanel(
+        panelManager.createInsertPanel(
             "vettura", PanelManager.getJTextField(),
             "dataCreazione", PanelManager.getJTextField(),
             "costruttore", PanelManager.getJTextField(),
@@ -24,7 +24,7 @@ public class InsertComponente extends JPanel {
 
         //Panel di insert per il motore
         panelMotore = new PanelManager();
-        panelMotore.createPanel(
+        panelMotore.createInsertPanel(
             "tipomotore", PanelManager.getJComboBox("ASPIRATO","TURBO"),
             "ncilindri", PanelManager.getJTextField(),
             "cilindrata", PanelManager.getJTextField()
@@ -32,13 +32,13 @@ public class InsertComponente extends JPanel {
 
         //Panel di insert per il cambio
         panelCambio = new PanelManager();
-        panelCambio.createPanel(
+        panelCambio.createInsertPanel(
             "nmarce", PanelManager.getJComboBox("7", "8")
         );
 
         //Panel di insert per il telaio
         panelTelaio = new PanelManager();
-        panelTelaio.createPanel(
+        panelTelaio.createInsertPanel(
             "materiale", PanelManager.getJTextField(),
             "peso", PanelManager.getJTextField()
         );

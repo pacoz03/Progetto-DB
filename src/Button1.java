@@ -12,7 +12,7 @@ public class Button1 extends JPanel{
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
         panelManager = new PanelManager();
-        panelManager.createPanel(
+        panelManager.createInsertPanel(
             "nome", PanelManager.getJTextField(),
             "sede", PanelManager.getJTextField()
         );

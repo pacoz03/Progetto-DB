@@ -12,7 +12,7 @@ public class Button3 extends JPanel {
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
         panelManager = new PanelManager();
-        panelManager.createPanel(
+        panelManager.createInsertPanel(
             "nome", PanelManager.getJTextField(),
             "cognome", PanelManager.getJTextField(),
             "datanascita", PanelManager.getJTextField(),
@@ -23,13 +23,13 @@ public class Button3 extends JPanel {
 
         //Panel per AM
         panelAM = new PanelManager();
-        panelAM.createPanel(
+        panelAM.createInsertPanel(
             "dataprimalicenza", PanelManager.getJTextField()
         );
 
         //Panel per PRO
         panelPRO = new PanelManager();
-        panelPRO.createPanel(
+        panelPRO.createInsertPanel(
             "nlicenze", PanelManager.getJTextField()
         );
         

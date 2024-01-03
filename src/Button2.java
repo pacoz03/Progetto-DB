@@ -12,7 +12,7 @@ public class Button2 extends JPanel {
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        panelManager.createPanel(
+        panelManager.createInsertPanel(
             "ngara", PanelManager.getJTextField(),
                        "modello", PanelManager.getJTextField(),
                        "scuderia", PanelManager.getJTextField()
