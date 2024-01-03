@@ -14,7 +14,7 @@ public class InsertComponente extends JPanel {
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
         //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+        JPanel panel = PanelManager.createPanel(inputFields, columnNames);
         inputFields.get("vettura").setEditable(false);
         
         //Creazione del bottone Submit
