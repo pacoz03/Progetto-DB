@@ -39,7 +39,7 @@ public class MenuPanel extends JPanel {
         add(outputPanel);
         /*FINE CREAZIONE PANEL DI OUTPUT */
         
-        //ButtonN equivale a buttons[n-1]. es. Button1 = buttons[0]
+        //ButtonN equivale a buttons[N-1]. es. Button1 = buttons[0]
 
         //Button1
         buttons[0].addActionListener(new ActionListener() {
@@ -57,19 +57,27 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        //Button3
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button3());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button3());
             }
         });
 
+        //Button4
         buttons[3].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button4());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button4());
+            }
+        });
+
+        //Button5
+        buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new Button5());
             }
         });
 
@@ -81,27 +89,27 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        //Button8
         buttons[7].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button8());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button8());
             }
         });
 
+        //Button9
         buttons[8].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button9());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button9());
             }
         });
 
+        //Button10
         buttons[9].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button10());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button10());
             }
         });
 
@@ -113,35 +121,35 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        //Button12
         buttons[11].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button12());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button12());
             }
         });
 
+        //Button13
         buttons[12].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button13());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button13());
             }
         });
 
+        //Button14
         buttons[13].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button14());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button14());
             }
         });
 
+        //Button15
         buttons[14].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button15());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button15());
             }
         });
 

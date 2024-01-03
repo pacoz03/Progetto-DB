@@ -10,34 +10,14 @@ public class Button2 extends JPanel {
     
     public Button2() {
         inputFields = new LinkedHashMap<>();
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
-        
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        //Creazione e riempimento Panel per le colonne
-        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        textFields = new JTextField[columnNames.length];
-        int i = 0;
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
-            namesPanel.add(label);
-            
-            textFields[i] = new JTextField();
-            textFields[i].setPreferredSize(new Dimension(300,30));
-            textPanel.add(textFields[i]);
-
-            inputFields.put(columnName,textFields[i]);
-            i++;
-        }
-
-        //Creazione di un box panel dove inserire le colonne
-        JPanel boxPanel = new JPanel();
-        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
-        boxPanel.add(namesPanel);
-        boxPanel.add(textPanel);
+        // Definisci la struttura della query SQL
+        String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
+        
+        //Creazione del panel di insert
+        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames, textFields);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -48,13 +28,9 @@ public class Button2 extends JPanel {
             }
         });
         
-        //Creazione mainPanel per utilizzare il border Layout
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(boxPanel, BorderLayout.CENTER);
-        mainPanel.add(submitButton,BorderLayout.SOUTH);
-
-        //Aggiungi al panel della classe il mainPanel
-        this.add(mainPanel);
+        panel.add(submitButton, BorderLayout.SOUTH);        
+        
+        this.add(panel);
     }
     
     private void handleSubmit() {

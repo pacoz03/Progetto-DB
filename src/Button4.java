@@ -6,25 +6,20 @@ import java.util.*;
 
 public class Button4 extends JPanel {
     private Map<String, JTextField> inputFields;
+    private JTextField textFields[];
     public Button4() {
-        super();
         inputFields = new HashMap<>();
-
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+        
+        //Set Layout della classe
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
         // Definisci la struttura della query SQL
         String[] columnNames = {"codice","quota","scuderia"};
 
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
-
-            add(label);
-            add(textField);
-        }
-
+        //Creazione del panel di insert
+        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames, textFields);
+        
+        //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -32,9 +27,10 @@ public class Button4 extends JPanel {
                 handleSubmit();
             }
         });
-
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
+        
+        panel.add(submitButton, BorderLayout.SOUTH);        
+        
+        this.add(panel);
     }
     
     private void handleSubmit() {
