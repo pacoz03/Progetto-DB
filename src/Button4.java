@@ -61,7 +61,11 @@ public class Button4 extends JPanel {
         }
         try {
             PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
-            // TODO: inserisci i valori
+            // "codice","quota","scuderia"
+            query.setObject(1, inputFields.get("codice"));
+            query.setObject(2, inputFields.get("quota"));
+            query.setObject(3, inputFields.get("scuderia"));
+
             
             int result = DBManager.executeUpdate(query);
             if (result == 1) {

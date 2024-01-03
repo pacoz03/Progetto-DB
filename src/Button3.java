@@ -61,7 +61,15 @@ public class Button3 extends JPanel {
         }
         try {
             PreparedStatement query = DBManager.createInsertQuery("pilota", columnNames);
-            // TODO: inserisci i valori
+            //"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"
+            query.setObject(1,inputFields.get("nome"));
+            query.setObject(2, inputData.get("cognome"));
+            query.setDate(3, java.sql.Date.valueOf((String)inputData.get("datanascita")));
+            query.setObject(4, inputData.get("nazionalita"));
+            query.setObject(5, inputData.get("tipopilota"));
+            query.setObject(6,java.sql.Date.valueOf((String)inputData.get("dataprimalicenza")));
+            query.setObject(7, inputData.get("nlicenze"));
+            query.setObject(8, inputData.get("vettura"));
             
             int result = DBManager.executeUpdate(query);
             if (result == 1) {

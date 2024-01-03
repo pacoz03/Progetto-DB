@@ -62,8 +62,9 @@ public class Button2 extends JPanel {
         }
         try {
             PreparedStatement query = DBManager.createInsertQuery("vettura", columnNames);
-            query.setObject(1, inputData.get("nome"));
-            query.setObject(2, inputData.get("sede"));
+            query.setObject(1, inputData.get("ngara"));
+            query.setObject(2, inputData.get("modello"));
+            query.setObject(3, inputData.get("scuderia"));
             
             int result = DBManager.executeUpdate(query);
             if (result == 1) {
