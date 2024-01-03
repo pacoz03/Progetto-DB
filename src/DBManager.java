@@ -24,8 +24,7 @@ public class DBManager {
         return connection;
     }
 
-    public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in)
-    {
+    public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in){
         ArrayList<ArrayList<Object>> tempData = new ArrayList<ArrayList<Object>>();
         //Per ogni nodo della lista (tupla)
         for (Map<String, Object> row : in) {
@@ -50,8 +49,7 @@ public class DBManager {
         return out;
     }
 
-    public static String createInsertQuery(String tableName, String[] columsNames)
-    {
+    public static PreparedStatement createInsertQuery(String tableName, String[] columsNames) throws SQLException{
         String query = new String();
         //INSERT INTO tableName (name1,name2,.....)
         query = "INSERT INTO " + tableName + "(";
@@ -65,8 +63,8 @@ public class DBManager {
             query += "?,";
         }
         query += "?);";
-
-        return query;
+        
+        return connection.prepareStatement(query);
     }
 
     public static List<Map<String, Object>> executeQuery(PreparedStatement preparedStatement) throws SQLException {

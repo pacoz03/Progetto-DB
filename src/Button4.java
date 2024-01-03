@@ -6,17 +6,35 @@ import java.util.*;
 
 public class Button4 extends JPanel {
     private Map<String, JTextField> inputFields;
+    private String[] columnNames = {"codice","quota","scuderia"};
     public Button4() {
         inputFields = new HashMap<>();
-        
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"codice","quota","scuderia"};
+         //Creazione e riempimento Panel per le colonne
+        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        for (String columnName : columnNames) {
+            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
+            namesPanel.add(label);
+            
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(300,30));
+            textPanel.add(textField);
 
-        //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+            inputFields.put(columnName,textField);
+        }
+     
+        //Creazione di un box panel dove inserire le colonne
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
+        boxPanel.add(namesPanel);
+        boxPanel.add(textPanel);
+        
+        //Creazione mainPanel per utilizzare il border Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(boxPanel, BorderLayout.CENTER);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -26,10 +44,10 @@ public class Button4 extends JPanel {
                 handleSubmit();
             }
         });
-
-        panel.add(submitButton, BorderLayout.SOUTH);        
         
-        this.add(panel);
+        mainPanel.add(submitButton, BorderLayout.SOUTH);        
+        
+        this.add(mainPanel);
     }
     
     private void handleSubmit() {
@@ -42,16 +60,14 @@ public class Button4 extends JPanel {
             inputData.put(columnName, value);
         }
         try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO gentleman (codice,quota,scuderia))\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("codice")+"', '"+
-                            inputData.get("quota")+"', '"+
-                            inputData.get("scuderia")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
+            PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
+            // TODO: inserisci i valori
+            
+            int result = DBManager.executeUpdate(query);
+            if (result == 1) {
+                // Visualizza un messaggio di successo
+                JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

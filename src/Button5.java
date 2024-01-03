@@ -8,14 +8,33 @@ public class Button5 extends JPanel {
     private Map<String, JTextField> inputFields;
     private String[] columnNames = {"gara","vettura"};
     public Button5() {
-        super();
         inputFields = new HashMap<>();
-        
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
+         //Creazione e riempimento Panel per le colonne
+        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        for (String columnName : columnNames) {
+            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
+            namesPanel.add(label);
+            
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(300,30));
+            textPanel.add(textField);
 
-        //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+            inputFields.put(columnName,textField);
+        }
+     
+        //Creazione di un box panel dove inserire le colonne
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
+        boxPanel.add(namesPanel);
+        boxPanel.add(textPanel);
+        
+        //Creazione mainPanel per utilizzare il border Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(boxPanel, BorderLayout.CENTER);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -25,10 +44,10 @@ public class Button5 extends JPanel {
                 handleSubmit();
             }
         });
-
-        panel.add(submitButton, BorderLayout.SOUTH);        
         
-        this.add(panel);
+        mainPanel.add(submitButton, BorderLayout.SOUTH);        
+        
+        this.add(mainPanel);
     }
     
     private void handleSubmit() {
@@ -43,8 +62,8 @@ public class Button5 extends JPanel {
         }
         try{
             //Crea il preparedStatement della query
-            PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("partecipazione", columnNames));
-            
+            PreparedStatement query = DBManager.createInsertQuery("partecipazione", columnNames);
+
             //Inserisci i valori
             query.setObject(1, inputData.get("gara"));
             query.setObject(2, inputData.get("vettura"));

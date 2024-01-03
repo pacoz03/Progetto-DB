@@ -41,7 +41,7 @@ public class InsertComponente extends JPanel {
             inputData.put(columnName, value);
         }
         try {
-            PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("componente", columnNames));
+            PreparedStatement query = DBManager.createInsertQuery("componente", columnNames);
             query.setObject(1, inputData.get("vettura"));
             query.setObject(2, inputData.get("costruttore"));
             query.setDate(3, java.sql.Date.valueOf((String)inputData.get("dataCreazione")));

@@ -9,12 +9,33 @@ public class Button2 extends JPanel {
     String[] columnNames = {"ngara", "modello", "scuderia"};
     
     public Button2() {
-        inputFields = new LinkedHashMap<>();
+        inputFields = new HashMap<>();
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+         //Creazione e riempimento Panel per le colonne
+        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        for (String columnName : columnNames) {
+            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
+            namesPanel.add(label);
+            
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(300,30));
+            textPanel.add(textField);
+
+            inputFields.put(columnName,textField);
+        }
+     
+        //Creazione di un box panel dove inserire le colonne
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
+        boxPanel.add(namesPanel);
+        boxPanel.add(textPanel);
+        
+        //Creazione mainPanel per utilizzare il border Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(boxPanel, BorderLayout.CENTER);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -25,9 +46,9 @@ public class Button2 extends JPanel {
             }
         });
         
-        panel.add(submitButton, BorderLayout.SOUTH);        
+        mainPanel.add(submitButton, BorderLayout.SOUTH);        
         
-        this.add(panel);
+        this.add(mainPanel);
     }
     
     private void handleSubmit() {
@@ -40,7 +61,7 @@ public class Button2 extends JPanel {
             inputData.put(columnName, value);
         }
         try {
-            PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("vettura", columnNames));
+            PreparedStatement query = DBManager.createInsertQuery("vettura", columnNames);
             query.setObject(1, inputData.get("nome"));
             query.setObject(2, inputData.get("sede"));
             

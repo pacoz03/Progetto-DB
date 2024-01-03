@@ -26,7 +26,7 @@ public class PanelManager{
 
             inputFields.put(columnName,textField);
         }
-
+    
         //Creazione di un box panel dove inserire le colonne
         JPanel boxPanel = new JPanel();
         boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
