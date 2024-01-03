@@ -6,7 +6,6 @@ import java.util.*;
 
 public class Button4 extends JPanel {
     private Map<String, JTextField> inputFields;
-    private JTextField textFields[];
     public Button4() {
         inputFields = new HashMap<>();
         
@@ -17,7 +16,7 @@ public class Button4 extends JPanel {
         String[] columnNames = {"codice","quota","scuderia"};
 
         //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames, textFields);
+        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -27,7 +26,7 @@ public class Button4 extends JPanel {
                 handleSubmit();
             }
         });
-        
+
         panel.add(submitButton, BorderLayout.SOUTH);        
         
         this.add(panel);

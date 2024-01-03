@@ -1,3 +1,4 @@
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.sql.*;
@@ -6,39 +7,29 @@ import javax.swing.*;
 
 public class Button6Update extends JPanel {
     private Map<String, JTextField> inputFields;
+    String[] columnNames = {"esito","posizione","punteggio"};
     JButton submitButton;
     
     public Button6Update(String gara, String veicolo){
-        super();
-        System.out.println(gara+veicolo);
-        inputFields = new HashMap<String, JTextField>();
-
-        setLayout(new GridLayout(4, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"esito","posizione","punteggio"};
-
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
-
-            add(label);
-            add(textField);
-        }
-
-        submitButton = new JButton("Submit");
+        inputFields = new LinkedHashMap<>();
+        //Set Layout della classe
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
+        //Creazione del panel di insert
+        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+        
+        //Creazione del bottone Submit
+        JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSubmit(gara,veicolo);
+                handleSubmit(inputFields.get(e));
             }
         });
-
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
-
+        
+        panel.add(submitButton, BorderLayout.SOUTH);        
+        
+        this.add(panel);
     }
 
     

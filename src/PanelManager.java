@@ -11,23 +11,20 @@ public class PanelManager{
     /*Restituisce un JPanel, con layout "Border", per l'inserimento dei dati dei campi contenuri in columnNames.
      * inputFields e textFields sono parametri di output in cui vengono lasciati i valori inseriti dall'utente
      */
-    public static JPanel createInsertPanel(Map<String,JTextField> inputFields, String[] columnNames, JTextField[] textFields)
+    public static JPanel createInsertPanel(Map<String,JTextField> inputFields, String[] columnNames)
     {
         //Creazione e riempimento Panel per le colonne
         JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
         JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        textFields = new JTextField[columnNames.length];
-        int i = 0;
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
             namesPanel.add(label);
             
-            textFields[i] = new JTextField();
-            textFields[i].setPreferredSize(new Dimension(300,30));
-            textPanel.add(textFields[i]);
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(300,30));
+            textPanel.add(textField);
 
-            inputFields.put(columnName,textFields[i]);
-            i++;
+            inputFields.put(columnName,textField);
         }
 
         //Creazione di un box panel dove inserire le colonne

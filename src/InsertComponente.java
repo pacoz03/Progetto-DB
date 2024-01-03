@@ -4,18 +4,18 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
 
-public class Button3 extends JPanel {
+public class InsertComponente extends JPanel {
     private Map<String, JTextField> inputFields;
-    public Button3() {
-        inputFields = new HashMap<>();
+    String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "peso", "tipocomponente"};
+    
+    public InsertComponente(int vettura) {
+        inputFields = new LinkedHashMap<>();
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
-
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"};
-
+        
         //Creazione del panel di insert
         JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+        inputFields.get("vettura").setEditable(false);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -41,21 +41,23 @@ public class Button3 extends JPanel {
             inputData.put(columnName, value);
         }
         try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO pilota (nome,cognome,datanascita,nazionalita,tipopilota,dataprimalicenza,nlicenze,vettura)\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("nome")+"', '"+
-                            inputData.get("cognome")+"', '"+
-                            inputData.get("datanascita")+"', '"+
-                            inputData.get("datanascita")+"', '"+
-                            inputData.get("tipopilota")+"', '"+
-                            inputData.get("dataprimalicenza")+"', '"+
-                            inputData.get("nlicenze")+"', '"+
-                            inputData.get("vettura")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
+            PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("componente", columnNames));
+            query.setObject(1, inputData.get("vettura"));
+            query.setObject(2, inputData.get("costruttore"));
+            query.setDate(3, java.sql.Date.valueOf((String)inputData.get("dataCreazione")));
+            query.setObject(4, inputData.get("cilindrata"));
+            query.setObject(5, inputData.get("tipomotore"));
+            query.setObject(6, inputData.get("ncilindri"));
+            query.setObject(7, inputData.get("materiale"));
+            query.setObject(8, inputData.get("nmarce"));
+            query.setObject(9, inputData.get("peso"));
+            query.setObject(10, inputData.get("tipocomponente"));
+            
+            int result = DBManager.executeUpdate(query);
+            if (result == 1) {
+                // Visualizza un messaggio di successo
+                JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

@@ -6,7 +6,6 @@ import java.util.*;
 
 public class Button1 extends JPanel{
     private Map<String, JTextField> inputFields;
-    private JTextField textFields[];
     String[] columnNames = {"nome","sede"};
     
     public Button1() {
@@ -15,7 +14,7 @@ public class Button1 extends JPanel{
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
         //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames, textFields);
+        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");

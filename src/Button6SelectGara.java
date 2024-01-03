@@ -66,11 +66,11 @@ public class Button6SelectGara extends JPanel{
 
     private List<Map<String,Object>> getPartecipazioni(){
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        /*try {
+        try {
             selectResult = DBManager.executeQuery("SELECT gara, vettura FROM partecipazione;");
         } catch (SQLException e1) {
             System.out.println(e1.getMessage());
-        }*/
+        }
         return selectResult;
     }
 
