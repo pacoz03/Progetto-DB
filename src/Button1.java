@@ -25,8 +25,8 @@ public class Button1 extends JPanel{
                 handleSubmit();
             }
         });
-        this.add(panelManager);
-        this.add(submitButton, BorderLayout.SOUTH);        
+        panelManager.add(submitButton, BorderLayout.SOUTH);
+        this.add(panelManager);        
     }
     
     private void handleSubmit() {
@@ -37,6 +37,7 @@ public class Button1 extends JPanel{
             query.setObject(2, ((JTextField)panelManager.inputFields.get("sede")).getText());
             
             DBManager.executeUpdate(query);
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

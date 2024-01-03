@@ -5,36 +5,33 @@ import java.sql.*;
 import java.util.*;
 
 public class Button3 extends JPanel {
-    private Map<String, JTextField> inputFields;
+    PanelManager panelManager, panelAM, panelPRO;
     String[] columnNames = {"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"};
     public Button3() {
-        inputFields = new HashMap<>();
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-         //Creazione e riempimento Panel per le colonne
-        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
-            namesPanel.add(label);
-            
-            JTextField textField = new JTextField();
-            textField.setPreferredSize(new Dimension(300,30));
-            textPanel.add(textField);
+        panelManager = new PanelManager();
+        panelManager.createPanel(
+            "nome", PanelManager.getJTextField(),
+            "cognome", PanelManager.getJTextField(),
+            "datanascita", PanelManager.getJTextField(),
+            "nazionalita", PanelManager.getJTextField(),
+            "vettura", PanelManager.getJTextField(),
+            "tipopilota", PanelManager.getJComboBox("AM", "PRO")
+        );
 
-            inputFields.put(columnName,textField);
-        }
-     
-        //Creazione di un box panel dove inserire le colonne
-        JPanel boxPanel = new JPanel();
-        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
-        boxPanel.add(namesPanel);
-        boxPanel.add(textPanel);
-        
-        //Creazione mainPanel per utilizzare il border Layout
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(boxPanel, BorderLayout.CENTER);
+        //Panel per AM
+        panelAM = new PanelManager();
+        panelAM.createPanel(
+            "dataprimalicenza", PanelManager.getJTextField()
+        );
+
+        //Panel per PRO
+        panelPRO = new PanelManager();
+        panelPRO.createPanel(
+            "nlicenze", PanelManager.getJTextField()
+        );
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
@@ -44,32 +41,46 @@ public class Button3 extends JPanel {
                 handleSubmit();
             }
         });
-        
-        mainPanel.add(submitButton, BorderLayout.SOUTH);        
-        
-        this.add(mainPanel);
+        JPanel totalPanel = new JPanel(new BorderLayout());
+        ((JComboBox)panelManager.inputFields.get("tipopilota")).addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String x = (String)e.getItem();
+                if(x.equals("PRO")){
+                    totalPanel.removeAll();
+                    totalPanel.add(panelManager,BorderLayout.NORTH);
+                    totalPanel.add(panelPRO, BorderLayout.CENTER);
+                    totalPanel.add(submitButton, BorderLayout.SOUTH);
+                    totalPanel.setVisible(false);
+                    totalPanel.setVisible(true);
+                }else{
+                    totalPanel.removeAll();
+                    totalPanel.add(panelManager,BorderLayout.NORTH);
+                    totalPanel.add(panelAM, BorderLayout.CENTER);
+                    totalPanel.add(submitButton, BorderLayout.SOUTH);
+                    totalPanel.setVisible(false);
+                    totalPanel.setVisible(true);
+                }
+            }
+        });
+        totalPanel.add(panelManager,BorderLayout.NORTH);
+        totalPanel.add(panelAM, BorderLayout.CENTER);
+        totalPanel.add(submitButton, BorderLayout.SOUTH);
+        this.add(totalPanel);
     }
     
     private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
-        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
-            String columnName = entry.getKey();
-            Object value = entry.getValue().getText();
-            inputData.put(columnName, value);
-        }
         try {
             PreparedStatement query = DBManager.createInsertQuery("pilota", columnNames);
             //"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"
-            query.setObject(1,inputFields.get("nome"));
-            query.setObject(2, inputData.get("cognome"));
-            query.setDate(3, java.sql.Date.valueOf((String)inputData.get("datanascita")));
-            query.setObject(4, inputData.get("nazionalita"));
-            query.setObject(5, inputData.get("tipopilota"));
-            query.setObject(6,java.sql.Date.valueOf((String)inputData.get("dataprimalicenza")));
-            query.setObject(7, inputData.get("nlicenze"));
-            query.setObject(8, inputData.get("vettura"));
+            query.setObject(1, ((JTextField)panelManager.inputFields.get("nome")).getText());
+            query.setObject(1, ((JTextField)panelManager.inputFields.get("cognome")).getText());
+            query.setDate(3, java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("datanascita")).getText()));
+            query.setObject(4, ((JTextField)panelManager.inputFields.get("nazionalita")).getText());
+            query.setObject(5, ((JComboBox<String>)panelManager.inputFields.get("tipopilota")).getSelectedItem());
+            query.setObject(6,java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("dataprimalicenza")).getText()));
+            query.setObject(7, ((JTextField)panelManager.inputFields.get("nlicenze")).getText());
+            query.setObject(8, ((JTextField)panelManager.inputFields.get("vettura")).getText());
             
             int result = DBManager.executeUpdate(query);
             if (result == 1) {
@@ -81,6 +92,5 @@ public class Button3 extends JPanel {
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
         }
-        System.out.println("Dati inseriti: " + inputData);
     }
 }
