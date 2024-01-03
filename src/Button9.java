@@ -10,9 +10,11 @@ public class Button9 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT nome, sede, COUNT(gentleman.codice)\r\n" + //
+            String query = "SELECT nome, sede, COUNT(gentleman.codice)\r\n" + //
                     "FROM scuderia JOIN gentleman ON scuderia.nome = gentleman.scuderia\r\n" + //
-                    "GROUP BY nome, sede;");
+                    "GROUP BY nome, sede;";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            selectResult = DBManager.executeQuery(preparedStatement);
         } catch (SQLException e1) {
             // TODO: handle exception
             System.out.println(e1.getMessage());

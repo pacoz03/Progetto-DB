@@ -8,9 +8,12 @@ public class Button8 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT DISTINCT scuderia.nome, SUM(quota) AS totalefinanziamenti\r\n" + 
+            String query = "SELECT DISTINCT scuderia.nome, SUM(quota) AS totalefinanziamenti\r\n" + 
                     "FROM scuderia JOIN gentleman ON scuderia.nome = gentleman.scuderia\r\n" + 
-                    "GROUP BY nome;");
+                    "GROUP BY nome;";
+
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            selectResult = DBManager.executeQuery(preparedStatement);
         } catch (SQLException e1) {
             // TODO: handle exception
             System.out.println(e1.getMessage());
