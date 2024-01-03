@@ -1,5 +1,4 @@
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.util.*;
@@ -10,26 +9,47 @@ public class Button6Update extends JPanel {
     String[] columnNames = {"esito","posizione","punteggio"};
     JButton submitButton;
     
-    public Button6Update(String gara, String veicolo){
-        inputFields = new LinkedHashMap<>();
+    public Button6Update(String gara, String vettura){
+        inputFields = new HashMap<>();
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        //Creazione del panel di insert
-        JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames);
+         //Creazione e riempimento Panel per le colonne
+        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
+        for (String columnName : columnNames) {
+            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
+            namesPanel.add(label);
+            
+            JTextField textField = new JTextField();
+            textField.setPreferredSize(new Dimension(300,30));
+            textPanel.add(textField);
+
+            inputFields.put(columnName,textField);
+        }
+     
+        //Creazione di un box panel dove inserire le colonne
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
+        boxPanel.add(namesPanel);
+        boxPanel.add(textPanel);
+        
+        //Creazione mainPanel per utilizzare il border Layout
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.add(boxPanel, BorderLayout.CENTER);
         
         //Creazione del bottone Submit
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                handleSubmit(inputFields.get(e));
+                handleSubmit(gara, vettura);
             }
         });
         
-        panel.add(submitButton, BorderLayout.SOUTH);        
+        mainPanel.add(submitButton, BorderLayout.SOUTH);        
         
-        this.add(panel);
+        this.add(mainPanel);
     }
 
     
@@ -43,21 +63,21 @@ public class Button6Update extends JPanel {
 
         try {
             // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("UPDATE partecipazione\r\n" + //
-                    "SET esito = '"+ inputData.get("esito") +"', posizione = "+inputData.get("posizione")+", punteggio ="+ inputData.get("punteggio")+"\r\n" + //
-                    "WHERE gara = "+ gara+" AND vettura = "+ veicolo+";");
-
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
+            String query = "UPDATE partecipazione\r\n" + //
+                    "SET esito = ?, posizione = ?, punteggio =?" + //
+                    "WHERE gara = ? AND vettura = ?;";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            preparedStatement.setObject(1, inputData.get("esito"));
+            preparedStatement.setObject(2, inputData.get("posizione"));
+            preparedStatement.setObject(3, inputData.get("punteggio"));
+            preparedStatement.setObject(4, inputData.get(gara));
+            preparedStatement.setObject(5, inputData.get(veicolo));
+            DBManager.executeUpdate(preparedStatement);
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
             e1.printStackTrace();
         }
     }
-/*     public HashMap<String,Object> getUpdatableData(String gara,String veicolo){
-
-    } */
 }

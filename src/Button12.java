@@ -8,7 +8,10 @@ public class Button12 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT nome, ncomponenti FROM costruttore;");
+            String query = "SELECT nome, ncomponenti FROM costruttore;";
+
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            selectResult = DBManager.executeQuery(preparedStatement);
         } catch (SQLException e1) {
             // TODO: handle exception
             System.out.println(e1.getMessage());
