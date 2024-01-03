@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.util.*;
 
+import javax.swing.JTextField;
+
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
     private static final String USER = "admin";
@@ -15,6 +17,11 @@ public class DBManager {
         } catch (Exception e) {
             System.err.println("Error while connecting to database.");
         }
+    }
+
+    public static Connection getConnection()
+    {
+        return connection;
     }
 
     public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in)
@@ -43,12 +50,29 @@ public class DBManager {
         return out;
     }
 
+    public static String createInsertQuery(String tableName, String[] columsNames)
+    {
+        String query = new String();
+        //INSERT INTO tableName (name1,name2,.....)
+        query = "INSERT INTO " + tableName + "(";
+        for(int i = 0; i < columsNames.length-1; i++){
+            query += columsNames[i] + ",";
+        }
+        query += columsNames[columsNames.length-1] + ")";
+        //VALUES (?,?,...);
+        query += "VALUES (";
+        for(int i = 0; i < columsNames.length-1; i++){
+            query += "?,";
+        }
+        query += "?);";
 
-    public static List<Map<String, Object>> executeQuery(String query) throws SQLException {
+        return query;
+    }
+
+    public static List<Map<String, Object>> executeQuery(PreparedStatement preparedStatement) throws SQLException {
         List<Map<String, Object>> resultList = new ArrayList<>();
 
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             // Ottenere i metadati del risultato

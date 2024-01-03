@@ -7,16 +7,13 @@ import java.util.*;
 public class Button5 extends JPanel {
     private Map<String, JTextField> inputFields;
     private JTextField textFields[];
+    private String[] columnNames = {"gara","vettura"};
     public Button5() {
         super();
         inputFields = new HashMap<>();
         
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
-        
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"gara","vettura"};
-        
 
         //Creazione del panel di insert
         JPanel panel = PanelManager.createInsertPanel(inputFields, columnNames, textFields);
@@ -44,21 +41,13 @@ public class Button5 extends JPanel {
             Object value = entry.getValue().getText();
             inputData.put(columnName, value);
         }
-        try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO partecipazione (gara,vettura))\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("gara")+"', '"+
-                            inputData.get("vettura")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
-        } catch (SQLException e1) {
-            // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+        try{
+            PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("partecipazione", columnNames));
+            query.setInt(0, (int)inputData.get("gara"));
+            query.setString(1, (String)inputData.get("vettura"));
+            DBManager.executeQuery(query);
+        }catch(Exception e){
+            // TODO: handle exception
         }
-        System.out.println("Dati inseriti: " + inputData);
     }
 }
