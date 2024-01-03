@@ -10,7 +10,7 @@ public class Button11 extends JPanel {
         this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
-        try {
+        /*try {
             selectResult = DBManager.executeQuery("SELECT scuderia.nome, COUNT(gentleman.codice) * 100 / COUNT(pilota.codice) AS percentualeGentleman\r\n" + //
                     "FROM scuderia \tJOIN vettura ON scuderia.nome = vettura.scuderia\r\n" + //
                     "\t\t\t\tJOIN pilota ON vettura.ngara = pilota.vettura\r\n" + //
@@ -19,7 +19,7 @@ public class Button11 extends JPanel {
         } catch (SQLException e1) {
             // TODO: handle exception
             System.out.println(e1.getMessage());
-        }
+        }*/
 
         Object[][] data = DBManager.convertToObjectMatrix(selectResult);
         String[] col = new String[]{"Scuderia", "Percentuale di Gentleman"};

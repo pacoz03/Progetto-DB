@@ -5,8 +5,8 @@ import javax.swing.JTextField;
 
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
-    private static final String USER = "admin";
-    private static final String PASSWORD = "admin";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
     private static Connection connection;
 
     public DBManager()
@@ -123,13 +123,17 @@ public class DBManager {
 
 
     // Metodo per eseguire un'operazione di insert, update o delete
-    public static int executeUpdate(String query) throws SQLException {
-        System.out.println("Executing update: " + query);
-        try (Statement preparedStatement = connection.createStatement()) 
-            {
-            // Esegue l'operazione e restituisce il numero di righe interessate
-            return preparedStatement.executeUpdate(query);
+    public static int executeUpdate(PreparedStatement preparedStatement) throws SQLException {
+        System.out.println("Executing update: " + preparedStatement);
+        try {
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Query eseguita correttamente, righe modificate: " + rowsAffected);
+            return rowsAffected;
+        } catch (Exception e) {
+            System.out.println("Query fallita: " + e.getMessage());
         }
+    
+        return 0;
     }
     
     // Metodo per chiudere la connessione

@@ -40,12 +40,18 @@ public class Button5 extends JPanel {
             String columnName = entry.getKey();
             Object value = entry.getValue().getText();
             inputData.put(columnName, value);
+            System.out.println(columnName + " " + value);
         }
         try{
+            //Crea il preparedStatement della query
             PreparedStatement query = DBManager.getConnection().prepareStatement(DBManager.createInsertQuery("partecipazione", columnNames));
-            query.setInt(0, (int)inputData.get("gara"));
-            query.setString(1, (String)inputData.get("vettura"));
-            DBManager.executeQuery(query);
+            
+            //Inserisci i valori
+            query.setObject(1, inputData.get("gara"));
+            query.setObject(2, inputData.get("vettura"));
+
+            //Esegui l'update
+            DBManager.executeUpdate(query);
         }catch(Exception e){
             // TODO: handle exception
         }
