@@ -46,21 +46,17 @@ public class Button3 extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 String x = (String)e.getItem();
+                totalPanel.removeAll();
+                totalPanel.add(panelManager,BorderLayout.NORTH);
                 if(x.equals("PRO")){
-                    totalPanel.removeAll();
-                    totalPanel.add(panelManager,BorderLayout.NORTH);
                     totalPanel.add(panelPRO, BorderLayout.CENTER);
-                    totalPanel.add(submitButton, BorderLayout.SOUTH);
-                    totalPanel.setVisible(false);
-                    totalPanel.setVisible(true);
                 }else{
-                    totalPanel.removeAll();
-                    totalPanel.add(panelManager,BorderLayout.NORTH);
+                    
                     totalPanel.add(panelAM, BorderLayout.CENTER);
-                    totalPanel.add(submitButton, BorderLayout.SOUTH);
-                    totalPanel.setVisible(false);
-                    totalPanel.setVisible(true);
                 }
+                totalPanel.add(submitButton, BorderLayout.SOUTH);
+                totalPanel.setVisible(false);
+                totalPanel.setVisible(true);
             }
         });
         totalPanel.add(panelManager,BorderLayout.NORTH);
@@ -77,7 +73,7 @@ public class Button3 extends JPanel {
             query.setObject(1, ((JTextField)panelManager.inputFields.get("cognome")).getText());
             query.setDate(3, java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("datanascita")).getText()));
             query.setObject(4, ((JTextField)panelManager.inputFields.get("nazionalita")).getText());
-            query.setObject(5, ((JComboBox<String>)panelManager.inputFields.get("tipopilota")).getSelectedItem());
+            query.setObject(5, ((JComboBox)panelManager.inputFields.get("tipopilota")).getSelectedItem());
             query.setObject(6,java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("dataprimalicenza")).getText()));
             query.setObject(7, ((JTextField)panelManager.inputFields.get("nlicenze")).getText());
             query.setObject(8, ((JTextField)panelManager.inputFields.get("vettura")).getText());
