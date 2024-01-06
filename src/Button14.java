@@ -19,14 +19,12 @@ public class Button14 extends JPanel {
             // TODO: handle exception
             System.out.println(e1.getMessage());
         }
-
         Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Vettura", "Punteggio Totale, Tipo Motore"};
+        String[] col = new String[]{"Vettura", "Punteggio Totale","Tipo Motore"};
         JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
-    
-        this.add(scrollPane);
 
+        this.add(scrollPane);
 
         try {
             String query = "SELECT ngara, punteggiototale, tipomotore\r\n" + //
@@ -41,7 +39,7 @@ public class Button14 extends JPanel {
         }
 
         data = DBManager.convertToObjectMatrix(selectResult);
-        col = new String[]{"Vettura", "Punteggio Totale, Tipo Motore"};
+        col = new String[]{"Vettura", "Punteggio Totale"," Tipo Motore"};
         table = new JTable(data, col);
         JScrollPane scrollPane1 = new JScrollPane(table);
 

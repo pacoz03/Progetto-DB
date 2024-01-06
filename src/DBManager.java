@@ -23,19 +23,23 @@ public class DBManager {
         return connection;
     }
 
-    public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in){
+    public static Object[][] convertToObjectMatrix(List<Map<String, Object>> in,String... colNames){
         ArrayList<ArrayList<Object>> tempData = new ArrayList<ArrayList<Object>>();
         //Per ogni nodo della lista (tupla)
         for (Map<String, Object> row : in) {
             //Crea un ArrayList dove inserire tutti i valori della tupla
             ArrayList<Object> temp = new ArrayList<>();
             //Per ogni entry della mappa (coppia {nome colonna, valore})
-            for (Map.Entry<String, Object> entry : row.entrySet()) {
-                //Prendi il valore ed inseriscilo nell'ArrayList
-                System.out.println(entry.getKey() + " " + entry.getValue());
-                Object columnValue = entry.getValue();
-                temp.add(0, columnValue);
-            }
+            if(colNames.length == 0)
+                for(Map.Entry<String, Object> entry : row.entrySet()){                
+                        //Aggiungi il valore alla lista
+                        System.out.println(entry.getKey() + " " + entry.getValue());
+                        temp.add(entry.getValue());
+                }
+            else
+                for(String colName : colNames){
+                    temp.add(row.get(colName));
+                }
             tempData.add(temp);
         }
         //Converti in una matrice di Object

@@ -33,6 +33,7 @@ public class PanelManager extends JPanel{
         return t;
     }
 
+
     public void createInsertPanel(Object... objects){
         if(objects.length % 2 != 0)
         {

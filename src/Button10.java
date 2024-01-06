@@ -7,8 +7,7 @@ import javax.swing.*;
 public class Button10 extends JPanel {
     public Button10() {
         super();
-        List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        //Inserisci il risultato in selectResult
+        List<Map<String, Object>> selectResult = null; 
         try {
             String query = "SELECT pilota.nome, pilota.cognome, pilota.nazionalita, vettura.ngara, gara.codice, circuito.sede\r\n" + //
                     "FROM pilota JOIN vettura ON vettura.ngara = pilota.vettura\r\n" + //
