@@ -58,28 +58,20 @@ public class InsertComponente extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 String x = (String)e.getItem();
+                totalPanel.removeAll();
+                totalPanel.add(panelManager,BorderLayout.NORTH);
                 if(x.equals("MOTORE")){
-                    totalPanel.removeAll();
-                    totalPanel.add(panelManager,BorderLayout.NORTH);
                     totalPanel.add(panelMotore, BorderLayout.CENTER);
-                    totalPanel.add(submitButton, BorderLayout.SOUTH);
-                    totalPanel.setVisible(false);
-                    totalPanel.setVisible(true);
+                    
                 }else if(x.equals("TELAIO")){
-                    totalPanel.removeAll();
-                    totalPanel.add(panelManager,BorderLayout.NORTH);
                     totalPanel.add(panelTelaio, BorderLayout.CENTER);
-                    totalPanel.add(submitButton, BorderLayout.SOUTH);
-                    totalPanel.setVisible(false);
-                    totalPanel.setVisible(true);
                 }else{
-                    totalPanel.removeAll();
-                    totalPanel.add(panelManager,BorderLayout.NORTH);
                     totalPanel.add(panelCambio, BorderLayout.CENTER);
-                    totalPanel.add(submitButton, BorderLayout.SOUTH);
-                    totalPanel.setVisible(false);
-                    totalPanel.setVisible(true);
                 }
+
+                totalPanel.add(submitButton, BorderLayout.SOUTH);
+                totalPanel.setVisible(false);
+                totalPanel.setVisible(true);
             }
         });
 

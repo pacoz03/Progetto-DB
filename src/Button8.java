@@ -8,7 +8,7 @@ public class Button8 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            String query = "SELECT DISTINCT scuderia.nome, SUM(quota) AS totalefinanziamenti\r\n" + 
+            String query = "SELECT DISTINCT scuderia.nome as scuderia, SUM(quota) AS totalefinanziamenti\r\n" + 
                     "FROM scuderia JOIN gentleman ON scuderia.nome = gentleman.scuderia\r\n" + 
                     "GROUP BY nome;";
 
@@ -19,8 +19,8 @@ public class Button8 extends JPanel {
             System.out.println(e1.getMessage());
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Scuderia", "Totale Finanziamentisrc/Button8.java"};
+        Object[][] data = DBManager.convertToObjectMatrix(selectResult,"scuderia","totalefinanziamenti");
+        String[] col = new String[]{"Scuderia", "Totale Finanziamenti"};
         JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane);

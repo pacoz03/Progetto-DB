@@ -33,9 +33,7 @@ public class PanelManager extends JPanel{
         return t;
     }
 
-    /*Restituisce un JPanel, con layout "Border", per l'inserimento dei dati dei campi contenuri in columnNames.
-     * inputFields e textFields sono parametri di output in cui vengono lasciati i valori inseriti dall'utente
-     */
+
     public void createInsertPanel(Object... objects){
         if(objects.length % 2 != 0)
         {

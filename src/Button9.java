@@ -21,7 +21,7 @@ public class Button9 extends JPanel {
         }
 
         Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Scuderia", "Numero di Finanziamenti"};
+        String[] col = new String[]{"Scuderia", "Numero di Finanziamenti","Numero Gentleman"};
         JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane);
