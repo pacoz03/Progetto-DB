@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.*;
 public class Button10 extends JPanel {
     public Button10() {
         super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; 
         try {
             String query = "SELECT pilota.nome, pilota.cognome, pilota.nazionalita, vettura.ngara, gara.codice, circuito.sede\r\n" + //
@@ -23,10 +25,8 @@ public class Button10 extends JPanel {
             System.out.println(e1.getMessage());
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Nome", "Cognome","Nazionalità","Vettura","Codice Gara","Sede Circuito"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        PanelManager panel = new PanelManager();
+        panel.createOutputPanel(selectResult, new String[]{"nome", "cognome", "nazionalità", "vettura", "gara", "sede circuito"});
+        this.add(panel);
     }
 }

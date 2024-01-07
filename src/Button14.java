@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -6,6 +7,7 @@ import javax.swing.*;
 public class Button14 extends JPanel {
     public Button14() {
         super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
@@ -19,12 +21,8 @@ public class Button14 extends JPanel {
             // TODO: handle exception
             System.out.println(e1.getMessage());
         }
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Vettura", "Punteggio Totale","Tipo Motore"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        this.add(scrollPane);
+        PanelManager out1 = new PanelManager();
+        out1.createOutputPanel(selectResult, new String[]{"vettura", "punteggio totale", "tipo motore"});
 
         try {
             String query = "SELECT ngara, punteggiototale, tipomotore\r\n" + //
@@ -38,12 +36,13 @@ public class Button14 extends JPanel {
             System.out.println(e1.getMessage());
         }
 
-        data = DBManager.convertToObjectMatrix(selectResult);
-        col = new String[]{"Vettura", "Punteggio Totale"," Tipo Motore"};
-        table = new JTable(data, col);
-        JScrollPane scrollPane1 = new JScrollPane(table);
-
-        this.add(scrollPane1);
-
+        PanelManager out2 = new PanelManager();
+        out2.createOutputPanel(selectResult, new String[]{"vettura", "punteggio totale", "tipo motore"});
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(out1);
+        panel.add(out2);
+        JScrollPane scrollPane = new JScrollPane(panel);
+        this.add(scrollPane);
     }
 }

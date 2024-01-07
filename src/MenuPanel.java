@@ -86,7 +86,15 @@ public class MenuPanel extends JPanel {
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addPanelToOutput(new Button6SelectGara());
+                addPanelToOutput(new Button6());
+            }
+        });
+
+        //Button7
+        buttons[6].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new Button7());
             }
         });
 

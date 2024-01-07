@@ -4,9 +4,11 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -63,5 +65,16 @@ public class PanelManager extends JPanel{
         mainPanel.add(boxPanel, BorderLayout.CENTER);
 
         this.add(mainPanel);
+    }
+
+    public JTable createOutputPanel(List<Map<String, Object>> result, String[] col)
+    {
+        Object[][] data = DBManager.convertToObjectMatrix(result);
+        JTable table = new JTable(data, col);
+        table.setPreferredScrollableViewportSize(new Dimension(500,300));
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        this.add(scrollPane);
+        return table;
     }
 }

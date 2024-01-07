@@ -15,6 +15,7 @@ public class DBManager {
             System.out.println("Connected to database");   
         } catch (Exception e) {
             System.err.println("Error while connecting to database.");
+            e.printStackTrace();
         }
     }
 
@@ -67,6 +68,18 @@ public class DBManager {
         }
         query += "?);";
         
+        return connection.prepareStatement(query);
+    }
+
+    public static PreparedStatement createUpdateQuery(String tableName, String[] columsNames, String conditions) throws SQLException{
+        String query = new String();
+        //INSERT INTO tableName (name1,name2,.....)
+        query = "UPDATE " + tableName + "\nSET ";
+        for(int i = 0; i < columsNames.length-1; i++){
+            query += columsNames[i] + " = ?,";
+        }
+        query += columsNames[columsNames.length-1] + " = ?";
+        query += "\n WHERE " + conditions + ";";
         return connection.prepareStatement(query);
     }
 

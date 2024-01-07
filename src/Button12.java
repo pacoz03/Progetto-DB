@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -5,6 +6,7 @@ import javax.swing.*;
 public class Button12 extends JPanel {
     public Button12() {
         super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
@@ -17,10 +19,8 @@ public class Button12 extends JPanel {
             System.out.println(e1.getMessage());
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Costruttore", "Numero di Componenti"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        PanelManager panel = new PanelManager();
+        panel.createOutputPanel(selectResult, new String[]{"nome", "numero componenti"});
+        this.add(panel);
     }
 }

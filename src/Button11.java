@@ -23,11 +23,8 @@ public class Button11 extends JPanel {
             System.out.println(e1.getMessage());
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Scuderia", "Percentuale di Gentleman"};
-        JTable table = new JTable(data, col);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        PanelManager panel = new PanelManager();
+        panel.createOutputPanel(selectResult, new String[]{"scuderia", "Percentuale di gentleman (%)"});
+        this.add(panel);
     }
 }
