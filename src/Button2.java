@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Map;
 
 public class Button2 extends JPanel {
     PanelManager panelManager;
@@ -29,18 +30,16 @@ public class Button2 extends JPanel {
         
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);
-    }
+    }    
     
     private void handleSubmit() {
         this.setVisible(false);
-                this.removeAll();
-                this.add(new InsertComponente(Integer.valueOf(((JTextField)panelManager.inputFields.get("ngara")).getText())));
-                this.setVisible(true);
-                try {
+        this.removeAll();
+        this.add(new InsertComponente(Integer.valueOf(((JTextField)panelManager.inputFields.get("ngara")).getText())));
+        this.setVisible(true);
+        try {
             PreparedStatement query = DBManager.createInsertQuery("vettura", columnNames);
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("ngara")).getText());
-            query.setObject(2, ((JTextField)panelManager.inputFields.get("modello")).getText());
-            query.setObject(3, ((JTextField)panelManager.inputFields.get("scuderia")).getText());
+            DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 3);
             
             DBManager.executeUpdate(query);
             JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);

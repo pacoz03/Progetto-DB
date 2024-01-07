@@ -19,14 +19,14 @@ public class InsertComponente extends JPanel {
             "vettura", PanelManager.getJTextField(),
             "dataCreazione", PanelManager.getJTextField(),
             "costruttore", PanelManager.getJTextField(),
-            "tipocomponente", PanelManager.getJComboBox("MOTORE","TELAIO","CAMBIO")
+            "tipocomponente", PanelManager.getJComboBox("","MOTORE","TELAIO","CAMBIO")
         );
         ((JTextField)panelManager.inputFields.get("vettura")).setText(String.valueOf(vettura));
 
         //Panel di insert per il motore
         panelMotore = new PanelManager();
         panelMotore.createInsertPanel(
-            "tipomotore", PanelManager.getJComboBox("ASPIRATO","TURBO"),
+            "tipomotore", PanelManager.getJComboBox("","ASPIRATO","TURBO"),
             "ncilindri", PanelManager.getJTextField(),
             "cilindrata", PanelManager.getJTextField()
         );
@@ -34,7 +34,7 @@ public class InsertComponente extends JPanel {
         //Panel di insert per il cambio
         panelCambio = new PanelManager();
         panelCambio.createInsertPanel(
-            "nmarce", PanelManager.getJComboBox("7", "8")
+            "nmarce", PanelManager.getJComboBox("","7", "8")
         );
 
         //Panel di insert per il telaio
@@ -65,7 +65,7 @@ public class InsertComponente extends JPanel {
                     
                 }else if(x.equals("TELAIO")){
                     totalPanel.add(panelTelaio, BorderLayout.CENTER);
-                }else{
+                }else if(x.equals("CAMBIO")){
                     totalPanel.add(panelCambio, BorderLayout.CENTER);
                 }
 
@@ -77,24 +77,33 @@ public class InsertComponente extends JPanel {
 
         
         totalPanel.add(panelManager, BorderLayout.NORTH);
-        totalPanel.add(panelMotore, BorderLayout.CENTER);
         totalPanel.add(submitButton, BorderLayout.SOUTH);
         this.add(totalPanel);
     }
+
+    public void setQueryParameters(PreparedStatement query, Map<String, Component> inputFields, int startParamIndex, int endParamIndex) throws SQLException {
+        for (int i = startParamIndex; i <= endParamIndex; i++) {
+            Component field = inputFields.get(columnNames[i-1]); // Cambia "param" con il nome effettivo dei campi
+            if (field instanceof JTextField) {
+                query.setObject(i, ((JTextField) field).getText().equals("")? null : ((JTextField) field).getText());
+            } else if (field instanceof JComboBox) {
+                Object selectedItem = ((JComboBox) field).getSelectedItem();
+                String valueToSet = (selectedItem != null && !String.valueOf(selectedItem).equals("")) ? selectedItem.toString() : null;
+                query.setObject(i, valueToSet);
+            }
+            // Aggiungi altri controlli per gli altri tipi di componenti (es. date, ecc.) se necessario
+        }
+    }
+    
     
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("componente", columnNames);
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("vettura")).getText());
-            query.setObject(2, ((JTextField)panelManager.inputFields.get("costruttore")).getText());
-            query.setDate(3, java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("dataCreazione")).getText()));
-            query.setObject(4, ((JComboBox)panelManager.inputFields.get("tipocomponente")).getSelectedItem());
-            query.setObject(5, ((JTextField)panelMotore.inputFields.get("tipomotore")).getText());
-            query.setObject(6, ((JTextField)panelMotore.inputFields.get("cilindrata")).getText());
-            query.setObject(7, ((JTextField)panelMotore.inputFields.get("ncilindri")).getText());
-            query.setObject(8, ((JComboBox)panelCambio.inputFields.get("nmarce")).getSelectedItem());
-            query.setObject(9, ((JTextField)panelTelaio.inputFields.get("materiale")).getText());
-            query.setObject(10, ((JTextField)panelTelaio.inputFields.get("peso")).getText());
+            setQueryParameters(query, panelManager.inputFields, 1, 4);
+            setQueryParameters(query, panelMotore.inputFields, 5, 7);
+            setQueryParameters(query, panelCambio.inputFields, 8, 8);
+            setQueryParameters(query, panelTelaio.inputFields, 9, 10);
+
             
             DBManager.executeUpdate(query);
         } catch (SQLException e1) {

@@ -1,5 +1,9 @@
+import java.awt.Component;
 import java.sql.*;
 import java.util.*;
+
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 
 public class DBManager {
@@ -117,6 +121,19 @@ public class DBManager {
         }
 
         return resultList;
+    }
+
+    public static void setQueryParameters(PreparedStatement query, Map<String, Component> inputFields,String[] columnNames, int startParamIndex, int endParamIndex) throws SQLException {
+        for (int i = startParamIndex; i <= endParamIndex; i++) {
+            Component field = inputFields.get(columnNames[i-1]);
+            if (field instanceof JTextField) {
+                query.setObject(i, ((JTextField) field).getText().equals("")? null : ((JTextField) field).getText());
+            } else if (field instanceof JComboBox) {
+                Object selectedItem = ((JComboBox) field).getSelectedItem();
+                String valueToSet = (selectedItem != null && !String.valueOf(selectedItem).equals("")) ? selectedItem.toString() : null;
+                query.setObject(i, valueToSet);
+            }
+        }
     }
 
     private static Object convertValue(Object value, int columnType) {

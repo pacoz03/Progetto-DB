@@ -36,8 +36,7 @@ public class Button5 extends JPanel {
             PreparedStatement query = DBManager.createInsertQuery("partecipazione", columnNames);
 
             //Inserisci i valori
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("gara")).getText());
-            query.setObject(2, ((JTextField)panelManager.inputFields.get("vettura")).getText());
+            DBManager.setQueryParameters(query, panelManager.inputFields, columnNames, 1, 2);
 
             //Esegui l'update
             DBManager.executeUpdate(query);

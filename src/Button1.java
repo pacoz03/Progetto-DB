@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Map;
 
 public class Button1 extends JPanel{
     PanelManager panelManager;
@@ -30,7 +31,7 @@ public class Button1 extends JPanel{
         JLabel title = new JLabel("Inserimento scuderia");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
-        
+
         panelManager.add(title, BorderLayout.NORTH);
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);        
@@ -40,8 +41,7 @@ public class Button1 extends JPanel{
         // Esegui l'azione di invio dei dati
         try {
             PreparedStatement query = DBManager.createInsertQuery("scuderia", columnNames);
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("nome")).getText());
-            query.setObject(2, ((JTextField)panelManager.inputFields.get("sede")).getText());
+            DBManager.setQueryParameters(query,panelManager.inputFields,columnNames, 1,2);
             
             DBManager.executeUpdate(query);
             JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);

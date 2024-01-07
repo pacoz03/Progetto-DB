@@ -30,13 +30,13 @@ public class Button4 extends JPanel {
         this.add(panelManager);
     }
     
+
+
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
             // "codice","quota","scuderia"
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("codice")).getText());
-            query.setObject(2, ((JTextField)panelManager.inputFields.get("quota")).getText());
-            query.setObject(3, ((JTextField)panelManager.inputFields.get("scuderia")).getText());
+            DBManager.setQueryParameters(query,panelManager.inputFields, columnNames, 1,3);
 
             
             DBManager.executeUpdate(query);

@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Button3 extends JPanel {
     PanelManager panelManager, panelAM, panelPRO;
-    String[] columnNames = {"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"};
+    String[] columnNames = {"nome","cognome","datanascita","nazionalita","vettura","tipopilota","dataprimalicenza","nlicenze"};
     public Button3() {
         //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
@@ -64,19 +64,14 @@ public class Button3 extends JPanel {
         totalPanel.add(submitButton, BorderLayout.SOUTH);
         this.add(totalPanel);
     }
+
     
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("pilota", columnNames);
-            //"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("nome")).getText());
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("cognome")).getText());
-            query.setDate(3, java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("datanascita")).getText()));
-            query.setObject(4, ((JTextField)panelManager.inputFields.get("nazionalita")).getText());
-            query.setObject(5, ((JComboBox)panelManager.inputFields.get("tipopilota")).getSelectedItem());
-            query.setObject(6,java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("dataprimalicenza")).getText()));
-            query.setObject(7, ((JTextField)panelManager.inputFields.get("nlicenze")).getText());
-            query.setObject(8, ((JTextField)panelManager.inputFields.get("vettura")).getText());
+            DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 6);
+            DBManager.setQueryParameters(query, panelAM.inputFields,columnNames, 7, 7);
+            DBManager.setQueryParameters(query, panelPRO.inputFields,columnNames, 8, 8);
             
             int result = DBManager.executeUpdate(query);
             if (result == 1) {
