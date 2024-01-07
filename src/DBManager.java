@@ -4,8 +4,8 @@ import java.util.*;
 
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
-    private static final String USER = "admin";
-    private static final String PASSWORD = "admin";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
     private static Connection connection;
 
     public DBManager()

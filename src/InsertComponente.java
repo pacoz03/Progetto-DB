@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.*;
 
 public class InsertComponente extends JPanel {
+    JButton submitButton;
     PanelManager panelManager, panelMotore, panelCambio, panelTelaio;
     String[] columnNames = {"vettura", "costruttore", "dataCreazione","tipocomponente", "tipomotore", "cilindrata", "ncilindri", "nmarce", "materiale", "peso"};
     
@@ -44,7 +45,7 @@ public class InsertComponente extends JPanel {
         );
         
         //Creazione del bottone Submit
-        JButton submitButton = new JButton("Submit");
+        submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -92,7 +93,7 @@ public class InsertComponente extends JPanel {
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("componente", columnNames);
-            query.setObject(1, ((JTextField)panelManager.inputFields.get("ngara")).getText());
+            query.setObject(1, ((JTextField)panelManager.inputFields.get("vettura")).getText());
             query.setObject(2, ((JTextField)panelManager.inputFields.get("costruttore")).getText());
             query.setDate(3, java.sql.Date.valueOf(((JTextField)panelManager.inputFields.get("dataCreazione")).getText()));
             query.setObject(4, ((JComboBox)panelManager.inputFields.get("tipocomponente")).getSelectedItem());
