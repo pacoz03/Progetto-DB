@@ -25,6 +25,13 @@ public class Button1 extends JPanel{
                 handleSubmit();
             }
         });
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Inserimento scuderia");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);        
     }
