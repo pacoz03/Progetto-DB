@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -26,6 +27,13 @@ public class Button15 extends JPanel {
         }
 
         PanelManager panel = new PanelManager();
+        //Stampare un report che elenchi ciascuna scuderia sulla base del rapporto
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Stampa della classifica finale dei punti conseguiti da tutte le vetture");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+
+        panel.add(title, BorderLayout.NORTH);
         panel.createOutputPanel(selectResult, new String[]{"scuderia", "media punti al minuto"});
         this.add(panel);
     }

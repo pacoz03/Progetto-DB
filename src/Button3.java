@@ -59,6 +59,13 @@ public class Button3 extends JPanel {
                 totalPanel.setVisible(true);
             }
         });
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Aggiunta di un nuovo pilota all'equipaggio");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
         totalPanel.add(panelManager,BorderLayout.NORTH);
         totalPanel.add(panelAM, BorderLayout.CENTER);
         totalPanel.add(submitButton, BorderLayout.SOUTH);

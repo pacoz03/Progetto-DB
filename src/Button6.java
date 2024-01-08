@@ -3,6 +3,7 @@ import java.util.*;
 import java.awt.event.*;
 import java.sql.*;
 import java.awt.BorderLayout;
+import java.awt.Font;
 
 public class Button6 extends JPanel{
     JButton submitButton;
@@ -34,6 +35,14 @@ public class Button6 extends JPanel{
                 }
             }
         });
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Registrazione del risultato di ogni vettura iscritta ad una gara");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
+        
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);
     }

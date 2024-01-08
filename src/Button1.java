@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.Map;
 
 public class Button1 extends JPanel{
     PanelManager panelManager;

@@ -25,6 +25,12 @@ public class Button5 extends JPanel {
                 handleSubmit();
             }
         });
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Iscrizione di una vettura ad una gara");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
         
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);

@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Panel;
 import java.sql.*;
 import java.util.*;
@@ -31,8 +32,11 @@ public class Button14 extends JPanel {
             // TODO: handle exception
             System.out.println(e1.getMessage());
         }
-        
+        JLabel title = new JLabel("Stampa delle classifiche finali di punti per tipo di motore");
+        title.setFont(new Font("", Font.BOLD, 24));
+
         JScrollPane scrollPane = new JScrollPane(panel);
+        this.add(title, BorderLayout.NORTH);
         this.add(scrollPane);
     }
 }

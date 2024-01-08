@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -20,6 +21,12 @@ public class Button12 extends JPanel {
         }
 
         PanelManager panel = new PanelManager();
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Stampa mensile dei costruttori compreso il numero di componenti che ha fornito");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panel.add(title, BorderLayout.NORTH);
         panel.createOutputPanel(selectResult, new String[]{"nome", "numero componenti"});
         this.add(panel);
     }

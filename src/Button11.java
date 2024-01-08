@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
@@ -24,6 +25,12 @@ public class Button11 extends JPanel {
         }
 
         PanelManager panel = new PanelManager();
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Per ciascuna scuderia, visualizzare la percentuale di gentleman driver di cui si compone l'equipaggio");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panel.add(title, BorderLayout.NORTH);
         panel.createOutputPanel(selectResult, new String[]{"scuderia", "Percentuale di gentleman (%)"});
         this.add(panel);
     }

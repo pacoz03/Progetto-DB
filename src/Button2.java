@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.Map;
 
 public class Button2 extends JPanel {
     PanelManager panelManager;
@@ -27,7 +26,13 @@ public class Button2 extends JPanel {
                 handleSubmit();
             }
         });
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Inserimento dei dati di una vettura, compresi i componenti di cui è composta");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
         
+        panelManager.add(title, BorderLayout.NORTH);
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);
     }    

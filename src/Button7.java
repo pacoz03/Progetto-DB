@@ -1,4 +1,5 @@
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,13 @@ public class Button7 extends JPanel {
                 handleSubmit();
             }
         });
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Verifica della possibilità di montare un componente su una vettura");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
         panelManager.add(submitButton, BorderLayout.SOUTH);
         this.add(panelManager);
         
