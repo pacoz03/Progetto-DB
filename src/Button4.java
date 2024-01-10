@@ -5,19 +5,20 @@ import java.sql.*;
 
 public class Button4 extends JPanel {
     PanelManager panelManager;
+    //Rappresenta il nome delle colonne da inserire nel database
     private String[] columnNames = {"codice","quota","scuderia"};
     public Button4() {
-        panelManager = new PanelManager();
-        //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
-        
+        /* Creazione di panelManager per l'inserimento dei dati */
+        panelManager = new PanelManager();
         panelManager.createInsertPanel(
             "codice", PanelManager.getJTextField(),
                        "quota", PanelManager.getJTextField(),
                        "scuderia", PanelManager.getJTextField()
         );
-        
-        //Creazione del bottone Submit
+        /* ------------------ */
+
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -25,15 +26,18 @@ public class Button4 extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
 
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Registrazione di un finanziamento per una scuderia");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
+        /* Aggiunta di titolo e del pulsante di submit a panelManager */
         panelManager.add(title, BorderLayout.NORTH);
-        
         panelManager.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+        
         this.add(panelManager);
     }
     
@@ -47,10 +51,9 @@ public class Button4 extends JPanel {
             
             JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
             panelManager.resetFields();
-        } catch (SQLException e1) {
+        } catch (SQLException e) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

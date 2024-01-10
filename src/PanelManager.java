@@ -20,12 +20,14 @@ public class PanelManager extends JPanel{
         this.setLayout(new BorderLayout());
     }
 
+    //Metodo per la creazione di un JTextField delle dimensioni standard utilizzate
     public static JTextField getJTextField(){
         JTextField t = new JTextField();
         t.setPreferredSize(new Dimension(300,30));
         return t;
     }
 
+    //Metodo per la creazione di un JComboBox inizializzato con tutti gli options
     public static JComboBox<String> getJComboBox(String... options){
         JComboBox<String> t = new JComboBox<String>();
         for (String s : options) {
@@ -34,22 +36,28 @@ public class PanelManager extends JPanel{
         return t;
     }
 
-
+    //Metodo per la creazione di un panel per l'inserimento dei dati
     public void createInsertPanel(Object... objects){
+        //Gli ogetti devono essere inviati a coppie <nome, Field>
         if(objects.length % 2 != 0)
         {
             System.out.println("Il numero di ogetti deve essere pari");
         }
         //Creazione e riempimento Panel per le colonne
-        JPanel namesPanel = new JPanel(new GridLayout(objects.length/2, 1));
-        JPanel objectPanel = new JPanel(new GridLayout(objects.length/2, 1));
+        JPanel namesPanel = new JPanel(new GridLayout(objects.length/2, 1));    //Contiene i nomi dei fields incolonnati
+        JPanel objectPanel = new JPanel(new GridLayout(objects.length/2, 1));   //Contiene i field incolonnati
 
+        //Per ogni coppia
         for(int i = 0; i < objects.length; i++)
         {
+            //Inserisci nel panel dei nomi una label col nome
             JLabel label = new JLabel((String)objects[i] + ":");
             namesPanel.add(label);
 
+            //Inserisci nel panel degli ogetti il field passato in input
             objectPanel.add((Component)objects[++i]);
+            
+            //Aggiungi alla mappa il field che avrà come chiave il nome
             inputFields.put((String)objects[i-1],(Component)objects[i]);
         }
     
@@ -66,18 +74,18 @@ public class PanelManager extends JPanel{
         this.add(mainPanel);
     }
 
+    //Metodo per la creazione di una tabella per visualizzare l'output
     public JTable createOutputPanel(List<Map<String, Object>> result, String[] col)
     {
         Object[][] data = DBManager.convertToObjectMatrix(result);
         JTable table = new JTable(data, col);
-        table.setPreferredScrollableViewportSize(new Dimension(500,300));
         JScrollPane scrollPane = new JScrollPane(table);
 
         this.add(scrollPane);
         return table;
     }
 
-    //Reset di tutti gli inputFields del panel a valori vuoti
+    //Metodo per il reset dei valori di tutti gli inputField
     public void resetFields()
     {
         for (Map.Entry<String, Component>  field : inputFields.entrySet()) {

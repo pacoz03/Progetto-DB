@@ -7,10 +7,8 @@ import javax.swing.*;
 
 public class Button15 extends JPanel {
     public Button15() {
-        super();
         this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        //Inserisci il risultato in selectResult
         try {
             String query = "SELECT scuderia.nome, AVG(rapporto.puntiAlMinuto) as puntialminuto\r\n" + 
                     "FROM scuderia JOIN (SELECT vettura.scuderia, vettura.ngara, vettura.punteggiototale / COALESCE( (SUM(gara.durata) * 60) , 1) AS puntiAlMinuto\r\n" + 
@@ -21,20 +19,22 @@ public class Button15 extends JPanel {
                     "GROUP BY scuderia.nome;";
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
             selectResult = DBManager.executeQuery(preparedStatement);
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
 
+        /* Creazione di panelManager per l'output dei dati in tabella */
         PanelManager panel = new PanelManager();
-        //Stampare un report che elenchi ciascuna scuderia sulla base del rapporto
+        panel.createOutputPanel(selectResult, new String[]{"scuderia", "media punti al minuto"});
+        /* ------------------ */
+
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Stampa della classifica finale dei punti conseguiti da tutte le vetture");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
 
         panel.add(title, BorderLayout.NORTH);
-        panel.createOutputPanel(selectResult, new String[]{"scuderia", "media punti al minuto"});
         this.add(panel);
     }
 }

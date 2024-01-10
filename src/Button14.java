@@ -8,7 +8,6 @@ import javax.swing.*;
 public class Button14 extends JPanel {
     String[] tipiMotore = {"ASPIRATO", "TURBO"};
     public Button14() {
-        super();
         this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         JPanel panel = new JPanel();
@@ -20,16 +19,21 @@ public class Button14 extends JPanel {
                     "WHERE tipomotore = ?\r\n" + //
                     "ORDER BY punteggiototale DESC;";
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            //Per ogni tipo di motore crea una classifica separata
             for (String tipo : tipiMotore) {
                 preparedStatement.setString(1, tipo);
                 selectResult = DBManager.executeQuery(preparedStatement);
+
+                /* Creazione di panelManager per l'output dei dati in tabella */
                 PanelManager panelManager = new PanelManager();
                 panelManager.createOutputPanel(selectResult, new String[]{"vettura", "punteggio totale", "tipo motore"});
+                /* ------------------ */
+
                 panel.add(panelManager);
             }
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
         JLabel title = new JLabel("Stampa delle classifiche finali di punti per tipo di motore");
         title.setFont(new Font("", Font.BOLD, 24));

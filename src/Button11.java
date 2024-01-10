@@ -19,19 +19,22 @@ public class Button11 extends JPanel {
                     "GROUP BY scuderia.nome;";
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
             selectResult = DBManager.executeQuery(preparedStatement);
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
 
+        /* Creazione di panelManager per l'output dei dati in tabella */
         PanelManager panel = new PanelManager();
+        panel.createOutputPanel(selectResult, new String[]{"scuderia", "Percentuale di gentleman (%)"});
+        /* ------------------ */
+
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Per ciascuna scuderia, visualizzare la percentuale di gentleman driver di cui si compone l'equipaggio");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
         panel.add(title, BorderLayout.NORTH);
-        panel.createOutputPanel(selectResult, new String[]{"scuderia", "Percentuale di gentleman (%)"});
         this.add(panel);
     }
 }

@@ -2,18 +2,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class InsertComponente extends JPanel {
     JButton submitButton;
     PanelManager panelManager, panelMotore, panelCambio, panelTelaio;
+    //Rappresenta il nome delle colonne da inserire nel database
     String[] columnNames = {"vettura", "costruttore", "dataCreazione","tipocomponente", "tipomotore", "cilindrata", "ncilindri", "nmarce", "materiale", "peso"};
     
+    public InsertComponente(){
+        constructor(-1);
+    }
+
     public InsertComponente(int vettura) {
-        //Set Layout della classe
+        constructor(vettura);
+    }
+
+    private void constructor(int vettura)
+    {
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        //Creazione del panel di insert
+        /* Creazione di panelManager per l'inserimento dei dati comuni a tutti i componenti */
         panelManager = new PanelManager();
         panelManager.createInsertPanel(
             "vettura", PanelManager.getJTextField(),
@@ -21,30 +29,34 @@ public class InsertComponente extends JPanel {
             "costruttore", PanelManager.getJTextField(),
             "tipocomponente", PanelManager.getJComboBox("","MOTORE","TELAIO","CAMBIO")
         );
-        ((JTextField)panelManager.inputFields.get("vettura")).setText(String.valueOf(vettura));
+        //Se si accede a questa pagina dopo l'inserimento di una vettura nel database, utilizza quella vettura per l'aggiunta dei componenti
+        if(vettura != -1)((JTextField)panelManager.inputFields.get("vettura")).setText(String.valueOf(vettura));
 
-        //Panel di insert per il motore
+        /* Creazione di panelMotore per l'inserimento dei dati del motore */
         panelMotore = new PanelManager();
         panelMotore.createInsertPanel(
             "tipomotore", PanelManager.getJComboBox("","ASPIRATO","TURBO"),
             "ncilindri", PanelManager.getJTextField(),
             "cilindrata", PanelManager.getJTextField()
         );
+        /* ------------------ */
 
-        //Panel di insert per il cambio
+        /* Creazione di panelCambio per l'inserimento dei dati del cambio */
         panelCambio = new PanelManager();
         panelCambio.createInsertPanel(
             "nmarce", PanelManager.getJComboBox("","7", "8")
         );
+        /* ------------------ */
 
-        //Panel di insert per il telaio
+        /* Creazione di panelTelaio per l'inserimento dei dati del telaio */
         panelTelaio = new PanelManager();
         panelTelaio.createInsertPanel(
             "materiale", PanelManager.getJTextField(),
             "peso", PanelManager.getJTextField()
         );
+        /* ------------------ */
         
-        //Creazione del bottone Submit
+        /* Creazione del bottone Submit */
         submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -52,9 +64,16 @@ public class InsertComponente extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
+        
+        /* Creazione di totalPanel, il quale conterrà tutti i pannelli */
         JPanel totalPanel = new JPanel(new BorderLayout());
-        //Creazione Listener sul Combobox
+
+        /* Creazione Listener sul JCombobox tipocomponente */
         ((JComboBox)panelManager.inputFields.get("tipocomponente")).addItemListener(new ItemListener() {
+            
+            //Quando il tipo del componente cambia, deve cambiare il panel per l'inserimento dei giusti dati.
+            //I valori inseriti negli altri pannelli verranno resettati per evitare errori
             @Override
             public void itemStateChanged(ItemEvent e) {
                 String x = (String)e.getItem();
@@ -62,11 +81,16 @@ public class InsertComponente extends JPanel {
                 totalPanel.add(panelManager,BorderLayout.NORTH);
                 if(x.equals("MOTORE")){
                     totalPanel.add(panelMotore, BorderLayout.CENTER);
-                    
+                    panelTelaio.resetFields();
+                    panelCambio.resetFields();
                 }else if(x.equals("TELAIO")){
                     totalPanel.add(panelTelaio, BorderLayout.CENTER);
+                    panelMotore.resetFields();
+                    panelCambio.resetFields();
                 }else if(x.equals("CAMBIO")){
                     totalPanel.add(panelCambio, BorderLayout.CENTER);
+                    panelMotore.resetFields();
+                    panelTelaio.resetFields();
                 }
 
                 totalPanel.add(submitButton, BorderLayout.SOUTH);
@@ -74,15 +98,19 @@ public class InsertComponente extends JPanel {
                 totalPanel.setVisible(true);
             }
         });
+        /* ------------------ */
 
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Inserimento componente");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
-        totalPanel.add(title, BorderLayout.NORTH);
+        /* Aggiunta del titolo e dei vari pannelli a totalPanel */
+        panelManager.add(title, BorderLayout.NORTH);
         totalPanel.add(panelManager, BorderLayout.CENTER);
         totalPanel.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+
         this.add(totalPanel);
     }
    
@@ -101,10 +129,9 @@ public class InsertComponente extends JPanel {
             panelMotore.resetFields();
             panelTelaio.resetFields();
             panelCambio.resetFields();
-        } catch (SQLException e1) {
+        } catch (SQLException e) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

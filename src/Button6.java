@@ -9,45 +9,53 @@ public class Button6 extends JPanel{
     JButton submitButton;
     List<Map<String,Object>> result;
     PanelManager panelManager;
-    JTable outTable;
+    JTable outTable;            //reference alla tabella di output contenuta restituita da panelManager
     public Button6(){
-        super();
         setLayout(new BorderLayout());
 
         result = getPartecipazioni();
+        /* Creazione di panelManager per l'output dei dati in tabella */
         panelManager = new PanelManager();
         outTable = panelManager.createOutputPanel(result,new String[]{"gara", "vettura", "posizione", "esito", "punteggio"});
+        /* ------------------ */
+        
+        /* Creazione del pulsante di submit */
         submitButton = new JButton("Submit");
-
-        /* Verificare se la selezione dei valori nella combo box può essere effetuato usando lindice dello stesso in corrispondenza con la entry della lista di partecipazioni */
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int n = outTable.getRowCount();
                 Object[] dataRow = new Object[outTable.getColumnCount()];
+                //Per ogni riga della tabella
                 for(int i = 0; i < n; i++)
                 {
+                    //Per ogni campo della riga
                     for(int j = 0; j < dataRow.length; j++)
                     {
+                        //Prendi il valore della cella
                         dataRow[j] = outTable.getValueAt(i, j);
                     }
-                    updatePartecipazione(dataRow);
+                    //(Riga completata) Esegui l'update con i dati nella riga
+                    updatePartecipazione(dataRow, i);
                 }
             }
         });
+        /* ------------------ */
 
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Registrazione del risultato di ogni vettura iscritta ad una gara");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
+        /* Aggiunta di titolo e del pulsante di submit a panelManager */
         panelManager.add(title, BorderLayout.NORTH);
-        
         panelManager.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+
         this.add(panelManager);
     }
 
-    private int updatePartecipazione(Object[] data)
+    private void updatePartecipazione(Object[] data, int row)
     {
         String[] col = {"posizione", "esito", "punteggio"};
         try{
@@ -60,12 +68,9 @@ public class Button6 extends JPanel{
 
             DBManager.executeUpdate(query);
         }catch(Exception e){
-            System.out.println("Query fallita!");
-            e.printStackTrace();
-            return 0;
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore update riga: " + row, JOptionPane.ERROR_MESSAGE);
         }
-
-        return 1;
     }
 
     private List<Map<String,Object>> getPartecipazioni(){
@@ -74,10 +79,10 @@ public class Button6 extends JPanel{
             String query = "SELECT * FROM partecipazione WHERE esito = 'ISCRITTA';";
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
             selectResult = DBManager.executeQuery(preparedStatement);
-        } catch (SQLException e1) {
-            System.out.println(e1.getMessage());
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         return selectResult;
     }
-
 }

@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 public class MenuPanel extends JPanel {
     private JButton[] buttons = new JButton[15];
+    private JButton componentButton;
     private JPanel buttonsPanel, outputPanel;
     private JScrollPane buttonsScrollPane;
     
@@ -15,7 +16,7 @@ public class MenuPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         /*CREAZIONE SCROLLPANE PER I PULSANTI */
-        buttonsPanel = new JPanel(new GridLayout(15,1,5,5));
+        buttonsPanel = new JPanel(new GridLayout(16,1,5,5));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //aggiunta dei pulsanti al panel
@@ -25,6 +26,9 @@ public class MenuPanel extends JPanel {
             buttons[i].setPreferredSize(new Dimension(100,50));
             buttonsPanel.add(buttons[i]);
         }
+        componentButton = new JButton("InsertComponente");
+        componentButton.setPreferredSize(new Dimension(100,50));
+        buttonsPanel.add(componentButton);
         //istanziamento dello scrollpane e aggiunta del panel ad esso
         buttonsScrollPane = new JScrollPane(buttonsPanel);
         buttonsScrollPane.setPreferredSize(new Dimension(200,getHeight()));
@@ -156,6 +160,14 @@ public class MenuPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addPanelToOutput(new Button15());
+            }
+        });
+
+        //InsertComponent button
+        componentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new InsertComponente());
             }
         });
     }

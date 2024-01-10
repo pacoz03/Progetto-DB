@@ -5,11 +5,12 @@ import java.sql.*;
 
 public class Button3 extends JPanel {
     PanelManager panelManager, panelAM, panelPRO;
+    //Rappresenta il nome delle colonne da inserire nel database
     String[] columnNames = {"nome","cognome","datanascita","nazionalita","vettura","tipopilota","dataprimalicenza","nlicenze"};
     public Button3() {
-        //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
+        /* Creazione di panelManager per l'inserimento dei dati comuni a tutti i piloti */
         panelManager = new PanelManager();
         panelManager.createInsertPanel(
             "nome", PanelManager.getJTextField(),
@@ -19,20 +20,22 @@ public class Button3 extends JPanel {
             "vettura", PanelManager.getJTextField(),
             "tipopilota", PanelManager.getJComboBox("AM", "PRO")
         );
+        /* ------------------ */
 
-        //Panel per AM
+        /* Creazione di panelAM per l'inserimento dei dati dei piloti AM */
         panelAM = new PanelManager();
         panelAM.createInsertPanel(
             "dataprimalicenza", PanelManager.getJTextField()
         );
+        /* ------------------ */
 
-        //Panel per PRO
+        /* Creazione di panelPRO per l'inserimento dei dati dei piloti PRO */
         panelPRO = new PanelManager();
         panelPRO.createInsertPanel(
             "nlicenze", PanelManager.getJTextField()
         );
         
-        //Creazione del bottone Submit
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -40,8 +43,16 @@ public class Button3 extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
+
+        /* Creazione di un totalPanel che conterrà tutti gli altri pannelli  */
         JPanel totalPanel = new JPanel(new BorderLayout());
+        
+        /* Creazione di un listener sul JComboBox tipopilota  */
         ((JComboBox)panelManager.inputFields.get("tipopilota")).addItemListener(new ItemListener() {
+
+            //Quando il tipo del pilota cambia, deve cambiare il panel per l'inserimento dei giusti dati.
+            //I valori inseriti negli altri pannelli verranno resettati per evitare errori
             @Override
             public void itemStateChanged(ItemEvent e) {
                 String x = (String)e.getItem();
@@ -49,25 +60,30 @@ public class Button3 extends JPanel {
                 totalPanel.add(panelManager,BorderLayout.NORTH);
                 if(x.equals("PRO")){
                     totalPanel.add(panelPRO, BorderLayout.CENTER);
+                    panelAM.resetFields();
                 }else{
-                    
                     totalPanel.add(panelAM, BorderLayout.CENTER);
+                    panelPRO.resetFields();
                 }
                 totalPanel.add(submitButton, BorderLayout.SOUTH);
                 totalPanel.setVisible(false);
                 totalPanel.setVisible(true);
             }
         });
+        /* ------------------ */
 
         /* Label per il titolo del panel */
         JLabel title = new JLabel("Aggiunta di un nuovo pilota all'equipaggio");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
+        /* Aggiunta del titolo e dei vari pannelli a totalPanel */
         panelManager.add(title, BorderLayout.NORTH);
         totalPanel.add(panelManager,BorderLayout.NORTH);
         totalPanel.add(panelAM, BorderLayout.CENTER);
         totalPanel.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+
         this.add(totalPanel);
     }
 
@@ -84,10 +100,9 @@ public class Button3 extends JPanel {
             panelManager.resetFields();
             panelAM.resetFields();
             panelPRO.resetFields();
-        } catch (SQLException e1) {
+        } catch (SQLException e) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
