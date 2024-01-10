@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class Button3 extends JPanel {
     PanelManager panelManager, panelAM, panelPRO;
@@ -79,12 +78,12 @@ public class Button3 extends JPanel {
             DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 6);
             DBManager.setQueryParameters(query, panelAM.inputFields,columnNames, 7, 7);
             DBManager.setQueryParameters(query, panelPRO.inputFields,columnNames, 8, 8);
-            
-            int result = DBManager.executeUpdate(query);
-            if (result == 1) {
-                // Visualizza un messaggio di successo
-                JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-            }
+            DBManager.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
+            panelAM.resetFields();
+            panelPRO.resetFields();
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

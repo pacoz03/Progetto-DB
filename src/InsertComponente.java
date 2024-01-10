@@ -75,37 +75,32 @@ public class InsertComponente extends JPanel {
             }
         });
 
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Inserimento componente");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
         
-        totalPanel.add(panelManager, BorderLayout.NORTH);
+        totalPanel.add(title, BorderLayout.NORTH);
+        totalPanel.add(panelManager, BorderLayout.CENTER);
         totalPanel.add(submitButton, BorderLayout.SOUTH);
         this.add(totalPanel);
     }
-
-    public void setQueryParameters(PreparedStatement query, Map<String, Component> inputFields, int startParamIndex, int endParamIndex) throws SQLException {
-        for (int i = startParamIndex; i <= endParamIndex; i++) {
-            Component field = inputFields.get(columnNames[i-1]); // Cambia "param" con il nome effettivo dei campi
-            if (field instanceof JTextField) {
-                query.setObject(i, ((JTextField) field).getText().equals("")? null : ((JTextField) field).getText());
-            } else if (field instanceof JComboBox) {
-                Object selectedItem = ((JComboBox) field).getSelectedItem();
-                String valueToSet = (selectedItem != null && !String.valueOf(selectedItem).equals("")) ? selectedItem.toString() : null;
-                query.setObject(i, valueToSet);
-            }
-            // Aggiungi altri controlli per gli altri tipi di componenti (es. date, ecc.) se necessario
-        }
-    }
-    
+   
     
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("componente", columnNames);
-            setQueryParameters(query, panelManager.inputFields, 1, 4);
-            setQueryParameters(query, panelMotore.inputFields, 5, 7);
-            setQueryParameters(query, panelCambio.inputFields, 8, 8);
-            setQueryParameters(query, panelTelaio.inputFields, 9, 10);
-
-            
+            DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 4);
+            DBManager.setQueryParameters(query, panelMotore.inputFields,columnNames, 5, 7);
+            DBManager.setQueryParameters(query, panelCambio.inputFields,columnNames, 8, 8);
+            DBManager.setQueryParameters(query, panelTelaio.inputFields,columnNames, 9, 10);
             DBManager.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
+            panelMotore.resetFields();
+            panelTelaio.resetFields();
+            panelCambio.resetFields();
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

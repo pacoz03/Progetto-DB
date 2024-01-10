@@ -8,8 +8,8 @@ import javax.swing.JTextField;
 
 public class DBManager {
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/campionato";
-    private static final String USER = "admin";
-    private static final String PASSWORD = "admin";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
     private static Connection connection;
 
     public DBManager()
@@ -107,7 +107,6 @@ public class DBManager {
                     String columnName = metaData.getColumnName(i);
                     Object value = resultSet.getObject(i);
                     int columnType = metaData.getColumnType(i);
-                    //System.out.println("Column name: " + columnName + " | Value: " + value + " | Type: " + columnType);
                     // Converti il valore in base al tipo di dati della colonna
                     Object convertedValue = convertValue(value, columnType);
 

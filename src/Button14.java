@@ -1,6 +1,5 @@
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Panel;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;

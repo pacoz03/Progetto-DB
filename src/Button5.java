@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class Button5 extends JPanel {
     PanelManager panelManager;
@@ -40,12 +39,11 @@ public class Button5 extends JPanel {
         try{
             //Crea il preparedStatement della query
             PreparedStatement query = DBManager.createInsertQuery("partecipazione", columnNames);
-
-            //Inserisci i valori
             DBManager.setQueryParameters(query, panelManager.inputFields, columnNames, 1, 2);
-
-            //Esegui l'update
             DBManager.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
         }catch(Exception e){
             // TODO: handle exception
         }

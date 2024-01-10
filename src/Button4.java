@@ -42,12 +42,11 @@ public class Button4 extends JPanel {
     private void handleSubmit() {
         try {
             PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
-            // "codice","quota","scuderia"
             DBManager.setQueryParameters(query,panelManager.inputFields, columnNames, 1,3);
-
-            
             DBManager.executeUpdate(query);
+            
             JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);

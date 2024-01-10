@@ -12,7 +12,7 @@ public class Button13 extends JPanel {
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
         //Inserisci il risultato in selectResult
         try {
-            String query = "SELECT ngara, punteggiototale FROM vettura;";
+            String query = "SELECT ngara, punteggiototale FROM vettura ORDER BY punteggiototale DESC;";
             
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
             selectResult = DBManager.executeQuery(preparedStatement);

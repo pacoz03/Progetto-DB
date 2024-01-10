@@ -3,6 +3,7 @@ import javax.swing.*;
 public class App extends JFrame{
     private MenuPanel menuPanel;
 
+    //creazione del frame
     public App() {
         super();
         setTitle("Application");
@@ -19,7 +20,6 @@ public class App extends JFrame{
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
-                    System.out.println("Closing connection...");
                     DBManager.closeConnection();
                 } catch (Exception e) {
                     e.printStackTrace();

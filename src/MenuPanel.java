@@ -34,9 +34,6 @@ public class MenuPanel extends JPanel {
         
         /*CREAZIONE PANEL DI OUTPUT */
         outputPanel = new JPanel(new BorderLayout());
-        
-        outputPanel.setBackground(Color.BLUE);
-        outputPanel.setOpaque(true);
         add(outputPanel);
         /*FINE CREAZIONE PANEL DI OUTPUT */
         
@@ -161,11 +158,6 @@ public class MenuPanel extends JPanel {
                 addPanelToOutput(new Button15());
             }
         });
-
-        
-
-
-        
     }
 
     private void addPanelToOutput(JPanel p)

@@ -1,5 +1,4 @@
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -76,5 +75,18 @@ public class PanelManager extends JPanel{
 
         this.add(scrollPane);
         return table;
+    }
+
+    //Reset di tutti gli inputFields del panel a valori vuoti
+    public void resetFields()
+    {
+        for (Map.Entry<String, Component>  field : inputFields.entrySet()) {
+            Component comp = field.getValue();
+            if(comp instanceof JTextField){
+                ((JTextField)comp).setText("");
+            } else if(comp instanceof JComboBox){
+                ((JComboBox)comp).setSelectedItem("");
+            }
+        }
     }
 }

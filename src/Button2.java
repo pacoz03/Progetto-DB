@@ -28,7 +28,7 @@ public class Button2 extends JPanel {
         });
 
         /* Label per il titolo del panel */
-        JLabel title = new JLabel("Inserimento dei dati di una vettura, compresi i componenti di cui è composta");
+        JLabel title = new JLabel("Inserimento dei dati di una vettura");
         title.setFont(new Font("", Font.BOLD, 24));
         /* ------------------ */
         
@@ -45,10 +45,10 @@ public class Button2 extends JPanel {
         try {
             PreparedStatement query = DBManager.createInsertQuery("vettura", columnNames);
             DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 3);
-            
             DBManager.executeUpdate(query);
-            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
             
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
         } catch (SQLException e1) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
