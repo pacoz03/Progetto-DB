@@ -39,10 +39,10 @@ public class PanelManager extends JPanel{
 
     //Metodo per la creazione di un panel per l'inserimento dei dati
     public void createInsertPanel(Object... objects){
-        //Gli ogetti devono essere inviati a coppie <nome, Field>
+        //Gli oggetti devono essere inviati a coppie <nome, Field>
         if(objects.length % 2 != 0)
         {
-            System.out.println("Il numero di ogetti deve essere pari");
+            System.out.println("Il numero di oggetti deve essere pari");
         }
         //Creazione e riempimento Panel per le colonne
         JPanel namesPanel = new JPanel(new GridLayout(objects.length/2, 1));    //Contiene i nomi dei fields incolonnati
@@ -55,7 +55,7 @@ public class PanelManager extends JPanel{
             JLabel label = new JLabel((String)objects[i] + ":");
             namesPanel.add(label);
 
-            //Inserisci nel panel degli ogetti il field passato in input
+            //Inserisci nel panel degli oggetti il field passato in input
             objectPanel.add((Component)objects[++i]);
             
             //Aggiungi alla mappa il field che avrà come chiave il nome
