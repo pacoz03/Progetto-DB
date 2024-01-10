@@ -161,7 +161,6 @@ public class DBManager {
     public static int executeUpdate(PreparedStatement preparedStatement) throws SQLException {
         int rowsAffected = 0;
         rowsAffected = preparedStatement.executeUpdate();
-
         return rowsAffected;
     }
     

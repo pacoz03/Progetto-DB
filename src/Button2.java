@@ -49,12 +49,12 @@ public class Button2 extends JPanel {
             DBManager.executeUpdate(query);
             
             JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-            panelManager.resetFields();
             // Se l'inserimento è andato a buonfine, cancella i componenti nel label e crea il label per l'aggiunta di un componente 
             this.setVisible(false);
             this.removeAll();
             this.add(new InsertComponente(Integer.valueOf(((JTextField)panelManager.inputFields.get("ngara")).getText())));
             this.setVisible(true);
+            panelManager.resetFields();
         } catch (SQLException e) {
             // Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
