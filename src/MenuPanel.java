@@ -33,6 +33,11 @@ public class MenuPanel extends JPanel {
         buttonsScrollPane = new JScrollPane(buttonsPanel);
         buttonsScrollPane.setPreferredSize(new Dimension(200,getHeight()));
         buttonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        //Setting della velocità dello scrollbar verticale 
+        JScrollBar verticalScrollBar = buttonsScrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUnitIncrement(20);
+        
         add(buttonsScrollPane,BorderLayout.WEST);
         /*FINE CREAZIONE SCROLLPANE PER PULSANTI */
         

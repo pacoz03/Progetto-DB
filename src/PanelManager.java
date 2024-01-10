@@ -2,6 +2,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -80,6 +81,9 @@ public class PanelManager extends JPanel{
         Object[][] data = DBManager.convertToObjectMatrix(result);
         JTable table = new JTable(data, col);
         JScrollPane scrollPane = new JScrollPane(table);
+        //Setting della velocità dello scrollbar verticale 
+        JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUnitIncrement(20);
 
         this.add(scrollPane);
         return table;
