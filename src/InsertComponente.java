@@ -70,7 +70,7 @@ public class InsertComponente extends JPanel {
         JPanel totalPanel = new JPanel(new BorderLayout());
 
         /* Creazione Listener sul JCombobox tipocomponente */
-        ((JComboBox)panelManager.inputFields.get("tipocomponente")).addItemListener(new ItemListener() {
+        ((JComboBox<?>)panelManager.inputFields.get("tipocomponente")).addItemListener(new ItemListener() {
             
             //Quando il tipo del componente cambia, deve cambiare il panel per l'inserimento dei giusti dati.
             //I valori inseriti negli altri pannelli verranno resettati per evitare errori

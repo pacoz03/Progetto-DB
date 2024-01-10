@@ -49,7 +49,7 @@ public class Button3 extends JPanel {
         JPanel totalPanel = new JPanel(new BorderLayout());
         
         /* Creazione di un listener sul JComboBox tipopilota  */
-        ((JComboBox)panelManager.inputFields.get("tipopilota")).addItemListener(new ItemListener() {
+        ((JComboBox<?>)panelManager.inputFields.get("tipopilota")).addItemListener(new ItemListener() {
 
             //Quando il tipo del pilota cambia, deve cambiare il panel per l'inserimento dei giusti dati.
             //I valori inseriti negli altri pannelli verranno resettati per evitare errori

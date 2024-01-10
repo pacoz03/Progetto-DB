@@ -133,13 +133,14 @@ public class DBManager {
                 query.setObject(i, ((JTextField) field).getText().equals("")? null : ((JTextField) field).getText());
             } else if (field instanceof JComboBox) {
                 //Se è un JComboBox
-                Object selectedItem = ((JComboBox) field).getSelectedItem();
+                Object selectedItem = ((JComboBox<?>) field).getSelectedItem();
                 String valueToSet = (selectedItem != null && !String.valueOf(selectedItem).equals("")) ? selectedItem.toString() : null;
                 query.setObject(i, valueToSet);
             }
         }
     }
 
+    //Metodo per la conversione dei valori
     private static Object convertValue(Object value, int columnType) {
         // Aggiungi logicamente più conversioni in base ai tipi di dati necessari
         switch (columnType) {
@@ -155,7 +156,6 @@ public class DBManager {
                 return value;
         }
     }
-
 
     // Metodo per eseguire un'operazione di insert, update o delete
     public static int executeUpdate(PreparedStatement preparedStatement) throws SQLException {

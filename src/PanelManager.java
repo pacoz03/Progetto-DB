@@ -93,7 +93,7 @@ public class PanelManager extends JPanel{
             if(comp instanceof JTextField){
                 ((JTextField)comp).setText("");
             } else if(comp instanceof JComboBox){
-                ((JComboBox)comp).setSelectedItem("");
+                ((JComboBox<?>)comp).setSelectedItem("");
             }
         }
     }
