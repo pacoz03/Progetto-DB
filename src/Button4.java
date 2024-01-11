@@ -78,6 +78,7 @@ public class Button4 extends JPanel {
             }
         
         } catch (Exception e) {
+            //Visualizza un messaggio di errore
             JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
 

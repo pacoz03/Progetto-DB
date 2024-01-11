@@ -32,7 +32,7 @@ CREATE TABLE vettura (
     ngara INT,
     modello VARCHAR(20) NOT NULL,
     scuderia VARCHAR(30) NOT NULL,
-    punteggiototale INT DEFAULT 0,
+    punteggiototale INT NOT NULL DEFAULT 0,
     PRIMARY KEY (ngara),
     FOREIGN KEY (scuderia)
         REFERENCES scuderia (nome)
@@ -106,9 +106,9 @@ CREATE TABLE componente (
 CREATE TABLE partecipazione (
     gara INT NOT NULL,
     vettura INT NOT NULL,
-    posizione INT NOT NULL DEFAULT 0,
+    posizione INT NOT NULL DEFAULT -1,
     esito ENUM('ISCRITTA', 'TERMINATA','SQUALIFICA','GUASTO','INCIDENTE') NOT NULL DEFAULT 'ISCRITTA',
-    punteggio INT DEFAULT 0,
+    punteggio INT NOT NULL DEFAULT 0,
     FOREIGN KEY (vettura)
         REFERENCES vettura (ngara)
         ON UPDATE CASCADE
