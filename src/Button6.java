@@ -60,7 +60,12 @@ public class Button6 extends JPanel{
                         //Prendi il valore della cella
                         dataRow[j] = outTable.getValueAt(i, j);
                     }
-                    dataRow[dataRow.length-1] = points.get(Integer.parseInt(String.valueOf(dataRow[2])));
+
+                    if(points.get(Integer.parseInt(String.valueOf(dataRow[2]))) == null)
+                        dataRow[dataRow.length-1] = 0;
+                    else
+                        dataRow[dataRow.length-1] = points.get(Integer.parseInt(String.valueOf(dataRow[2])));
+
                     if(String.valueOf(dataRow[3]).equals("ISCRITTA"))
                         continue;
                     //(Riga completata) Esegui l'update con i dati nella riga

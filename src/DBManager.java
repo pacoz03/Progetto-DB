@@ -12,8 +12,7 @@ public class DBManager {
     private static final String PASSWORD = "root";
     private static Connection connection;
 
-    public DBManager()
-    {
+    public DBManager(){
         try {
             connection = DriverManager.getConnection(JDBC_URL, USER, PASSWORD);
             System.out.println("Connected to database");   
@@ -23,8 +22,7 @@ public class DBManager {
         }
     }
 
-    public static Connection getConnection()
-    {
+    public static Connection getConnection(){
         return connection;
     }
 

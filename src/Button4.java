@@ -2,7 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-
+import java.util.List;
+import java.util.Map;
 public class Button4 extends JPanel {
     PanelManager panelManager;
     //Rappresenta il nome delle colonne da inserire nel database
@@ -44,6 +45,48 @@ public class Button4 extends JPanel {
 
 
     private void handleSubmit() {
+        
+        try {
+            List<Map<String, Object>> selectResult = null;
+            int totaleEquipaggio = 0, totaleGentleman = 0;
+            String query = "SELECT  COUNT(pilota.codice) AS totaleEquipaggio\r\n" + //
+                            "FROM vettura JOIN pilota on pilota.vettura = vettura.ngara\n"+
+                            "WHERE vettura.ngara IN (SELECT ngara FROM pilota join vettura on pilota.vettura = vettura.ngara WHERE pilota.codice = ?)\n"+
+                            "GROUP BY ngara";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            
+            preparedStatement.setInt(1, Integer.parseInt(((JTextField)(panelManager.inputFields.get("codice"))).getText()));
+            selectResult = DBManager.executeQuery(preparedStatement);
+            if(selectResult.size() > 0)
+                totaleEquipaggio = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleEquipaggio")));
+            else
+                totaleEquipaggio = 0;
+
+            query = "SELECT  COUNT(pilota.codice) AS totaleGentleman\r\n" + //
+                            "FROM vettura JOIN pilota ON pilota.vettura = vettura.ngara\n"+
+                            "JOIN gentleman ON pilota.codice = gentleman.codice\n" +
+                            "WHERE vettura.ngara IN (SELECT ngara FROM pilota join vettura on pilota.vettura = vettura.ngara WHERE pilota.codice = ?)\n"+
+                            "GROUP BY ngara";
+
+            PreparedStatement preparedStatement1 = DBManager.getConnection().prepareStatement(query);
+            
+            preparedStatement1.setInt(1, Integer.parseInt(((JTextField)(panelManager.inputFields.get("codice"))).getText()));
+            selectResult = DBManager.executeQuery(preparedStatement1);
+            if(selectResult.size() > 0)
+                totaleGentleman = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleGentleman")));
+            else
+                totaleGentleman = 0;
+
+            if(totaleEquipaggio - totaleGentleman <= 1){
+                JOptionPane.showMessageDialog(this, "Un equipaggio non può essere formato da soli Gentleman Driver", "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+
         try {
             PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
             DBManager.setQueryParameters(query,panelManager.inputFields, columnNames, 1,3);

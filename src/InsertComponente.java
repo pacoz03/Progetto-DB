@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Map;
+import java.util.List;
 
 public class InsertComponente extends JPanel {
     JButton submitButton;
@@ -116,6 +118,24 @@ public class InsertComponente extends JPanel {
    
     
     private void handleSubmit() {
+        List<Map<String,Object>> selectResult = null;
+        try{
+            String query = "SELECT ngara\r\n" + //
+                    "FROM vettura JOIN componente ON vettura.ngara = componente.vettura\r\n" + //
+                    "WHERE vettura.ngara = ? AND componente.tipocomponente = ?;";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            preparedStatement.setObject(1, ((JTextField)(panelManager.inputFields.get("vettura"))).getText());
+            preparedStatement.setObject(2, ((JComboBox<?>)(panelManager.inputFields.get("tipocomponente"))).getSelectedItem());
+            selectResult = DBManager.executeQuery(preparedStatement);
+        }catch(Exception e){
+            // Visualizza un messaggio di errore
+           JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+
+        if(selectResult.size() > 0){
+            JOptionPane.showMessageDialog(null, "Componente già presente", "ERRORE", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
             PreparedStatement query = DBManager.createInsertQuery("componente", columnNames);
             DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 4);
