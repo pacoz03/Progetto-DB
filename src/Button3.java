@@ -34,6 +34,7 @@ public class Button3 extends JPanel {
         panelPRO.createInsertPanel(
             "nlicenze", PanelManager.getJTextField()
         );
+        /* ------------------ */
         
         /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
