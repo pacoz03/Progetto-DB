@@ -49,33 +49,28 @@ public class Button4 extends JPanel {
         try {
             List<Map<String, Object>> selectResult = null;
             int totaleEquipaggio = 0, totaleGentleman = 0;
-            String query = "SELECT  COUNT(pilota.codice) AS totaleEquipaggio\r\n" + //
+            String query = "SELECT  COUNT(pilota.codice) AS totaleEquipaggio, COUNT(gentleman.codice) AS totaleGentleman\r\n" + //
                             "FROM vettura JOIN pilota on pilota.vettura = vettura.ngara\n"+
+                            "LEFT JOIN gentleman on pilota.codice = gentleman.codice\n" +
                             "WHERE vettura.ngara IN (SELECT ngara FROM pilota join vettura on pilota.vettura = vettura.ngara WHERE pilota.codice = ?)\n"+
                             "GROUP BY ngara";
             PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
             
             preparedStatement.setInt(1, Integer.parseInt(((JTextField)(panelManager.inputFields.get("codice"))).getText()));
             selectResult = DBManager.executeQuery(preparedStatement);
-            if(selectResult.size() > 0)
+            //Se la select restituisce qualcosa (c'è almeno un pilota)
+            if(selectResult.size() > 0){
                 totaleEquipaggio = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleEquipaggio")));
-            else
+                //Se i campi della hashmap sono almeno 2 (esiste un gentleman nell'equipaggio)
+                if(selectResult.get(0).size() > 1){
+                    totaleGentleman = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleGentleman")));
+                }else{
+                    totaleGentleman = 0;
+                }
+            }else{
                 totaleEquipaggio = 0;
-
-            query = "SELECT  COUNT(pilota.codice) AS totaleGentleman\r\n" + //
-                            "FROM vettura JOIN pilota ON pilota.vettura = vettura.ngara\n"+
-                            "JOIN gentleman ON pilota.codice = gentleman.codice\n" +
-                            "WHERE vettura.ngara IN (SELECT ngara FROM pilota join vettura on pilota.vettura = vettura.ngara WHERE pilota.codice = ?)\n"+
-                            "GROUP BY ngara";
-
-            PreparedStatement preparedStatement1 = DBManager.getConnection().prepareStatement(query);
-            
-            preparedStatement1.setInt(1, Integer.parseInt(((JTextField)(panelManager.inputFields.get("codice"))).getText()));
-            selectResult = DBManager.executeQuery(preparedStatement1);
-            if(selectResult.size() > 0)
-                totaleGentleman = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleGentleman")));
-            else
                 totaleGentleman = 0;
+            }
 
             if(totaleEquipaggio - totaleGentleman <= 1){
                 JOptionPane.showMessageDialog(this, "Un equipaggio non può essere formato da soli Gentleman Driver", "Errore", JOptionPane.ERROR_MESSAGE);
