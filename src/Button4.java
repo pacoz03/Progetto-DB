@@ -78,8 +78,7 @@ public class Button4 extends JPanel {
             }
         
         } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
 
         try {
