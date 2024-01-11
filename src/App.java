@@ -1,3 +1,4 @@
+/* Applicazione creata da Giuseppe Sica e Pasquale Livrieri. Tutti i diritti sull'applicazione sono RISERVATI e non può essere utilizzata a scopo di lucro. */
 import javax.swing.*;
 
 public class App extends JFrame{
@@ -6,7 +7,7 @@ public class App extends JFrame{
     //creazione del frame
     public App() {
         super();
-        setTitle("Application");
+        setTitle("WECApp");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
         setSize(1200, 750);
