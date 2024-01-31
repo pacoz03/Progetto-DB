@@ -1,14 +1,16 @@
+/* Applicazione creata da Giuseppe Sica e Pasquale Livrieri. Tutti i diritti sull'applicazione sono RISERVATI e non può essere utilizzata a scopo di lucro. */
 import javax.swing.*;
 
 public class App extends JFrame{
     private MenuPanel menuPanel;
 
+    //creazione del frame
     public App() {
         super();
-        setTitle("Application");
+        setTitle("WECApp");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(true);
-        setSize(900, 600);
+        setSize(1200, 750);
         setVisible(true);
         setLocation(this.getToolkit().getScreenSize().width / 2 - this.getWidth() / 2,
                 this.getToolkit().getScreenSize().height / 2 - this.getHeight() / 2);
@@ -19,7 +21,6 @@ public class App extends JFrame{
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 try {
-                    System.out.println("Closing connection...");
                     DBManager.closeConnection();
                 } catch (Exception e) {
                     e.printStackTrace();

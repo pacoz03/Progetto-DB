@@ -1,23 +1,34 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
 public class Button12 extends JPanel {
     public Button12() {
-        super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT nome, ncomponenti FROM costruttore;");
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+            String query = "SELECT nome, ncomponenti FROM costruttore;";
+
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            selectResult = DBManager.executeQuery(preparedStatement);
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Costruttore", "Numero di Componenti"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        /* Creazione di panelManager per l'output dei dati in tabella */
+        PanelManager panel = new PanelManager();
+        panel.createOutputPanel(selectResult, new String[]{"nome", "numero componenti"});
+        /* ------------------ */
+        
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Stampa mensile dei costruttori compreso il numero di componenti che ha fornito");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panel.add(title, BorderLayout.NORTH);
+        this.add(panel);
     }
 }

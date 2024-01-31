@@ -2,44 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class Button2 extends JPanel {
-    private Map<String, JTextField> inputFields;
-    private JTextField textFields[];
+    PanelManager panelManager;
+    String[] columnNames = {"ngara", "modello", "scuderia"};    //Rappresenta il nome delle colonne da inserire nel database
     
     public Button2() {
-        inputFields = new LinkedHashMap<>();
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"vettura", "costruttore", "dataCreazione", "cilindrata", "tipomotore", "ncilindri", "materiale", "nmarce", "peso", "tipocomponente"};
-        
-        //Set Layout della classe
         this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
         
-        //Creazione e riempimento Panel per le colonne
-        JPanel namesPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        JPanel textPanel = new JPanel(new GridLayout(columnNames.length+1, 1));
-        textFields = new JTextField[columnNames.length];
-        int i = 0;
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName+": ",JLabel.RIGHT);
-            namesPanel.add(label);
-            
-            textFields[i] = new JTextField();
-            textFields[i].setPreferredSize(new Dimension(300,30));
-            textPanel.add(textFields[i]);
-
-            inputFields.put(columnName,textFields[i]);
-            i++;
-        }
-
-        //Creazione di un box panel dove inserire le colonne
-        JPanel boxPanel = new JPanel();
-        boxPanel.setLayout(new BoxLayout(boxPanel,BoxLayout.X_AXIS));
-        boxPanel.add(namesPanel);
-        boxPanel.add(textPanel);
+        /* Creazione del panelManager per l'inserimento dei dati */
+        panelManager = new PanelManager();
+        panelManager.createInsertPanel(
+            "ngara", PanelManager.getJTextField(),
+                       "modello", PanelManager.getJTextField(),
+                       "scuderia", PanelManager.getJTextField()
+        );
+        /* ------------------ */
         
-        //Creazione del bottone Submit
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -47,50 +27,37 @@ public class Button2 extends JPanel {
                 handleSubmit();
             }
         });
-        
-        //Creazione mainPanel per utilizzare il border Layout
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(boxPanel, BorderLayout.CENTER);
-        mainPanel.add(submitButton,BorderLayout.SOUTH);
+        /* ------------------ */
 
-        //Aggiungi al panel della classe il mainPanel
-        this.add(mainPanel);
-    }
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Inserimento dei dati di una vettura");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        /* Aggiunta a panelManager di titolo e pulsante di submit */
+        panelManager.add(title, BorderLayout.NORTH);
+        panelManager.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+
+        this.add(panelManager);
+    }    
     
     private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
-        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
-            String columnName = entry.getKey();
-            Object value = entry.getValue().getText();
-            System.out.println(value);
-            inputData.put(columnName, value);
-        }
         try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO componente (vettura, costruttore, dataCreazione, cilindrata, tipomotore, ncilindri, materiale, nmarce, peso, tipocomponente)" +
-                    "VALUES (" +
-                    inputData.get("vettura") + ", '" + 
-                    inputData.get("costruttore") + "', '" + 
-                    inputData.get("dataCreazione") + "', " + 
-                    inputData.get("cilindrata") + ", '" + 
-                    inputData.get("tipomotore") + "', " + 
-                    inputData.get("ncilindri") + ", '" + 
-                    inputData.get("materiale") + "', " + 
-                    inputData.get("nmarce") + ", " + 
-                    inputData.get("peso") + ", '" + 
-                    inputData.get("tipocomponente") + "');");
-
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
-        } catch (SQLException e1) {
+            PreparedStatement query = DBManager.createInsertQuery("vettura", columnNames);
+            DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 3);
+            DBManager.executeUpdate(query);
+            
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            // Se l'inserimento è andato a buonfine, cancella i componenti nel label e crea il label per l'aggiunta di un componente 
+            this.setVisible(false);
+            this.removeAll();
+            this.add(new InsertComponente(Integer.valueOf(((JTextField)panelManager.inputFields.get("ngara")).getText())));
+            this.setVisible(true);
+            panelManager.resetFields();
+        } catch (SQLException e) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("Dati inseriti: " + inputData);
     }
 }

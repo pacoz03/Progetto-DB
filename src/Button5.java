@@ -2,29 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class Button5 extends JPanel {
-    private Map<String, JTextField> inputFields;
+    PanelManager panelManager;
+    private String[] columnNames = {"gara","vettura"};  //Rappresenta il nome delle colonne da inserire nel database
+
     public Button5() {
-        super();
-        inputFields = new HashMap<>();
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
+        /* Creazione di panelManager per l'inserimento dei dati */
+        panelManager = new PanelManager();
+        panelManager.createInsertPanel(
+            "gara", PanelManager.getJTextField(),
+                       "vettura", PanelManager.getJTextField()
+        );
+        /* ------------------ */
 
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"gara","vettura"};
-
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
-
-            add(label);
-            add(textField);
-        }
-
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -32,35 +26,31 @@ public class Button5 extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
 
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Iscrizione di una vettura ad una gara");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        /* Aggiunta di titolo e del pulsante di submit a panelManager */
+        panelManager.add(title, BorderLayout.NORTH);
+        panelManager.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+        this.add(panelManager);
     }
     
     private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
-        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
-            String columnName = entry.getKey();
-            Object value = entry.getValue().getText();
-            inputData.put(columnName, value);
+        try{
+            PreparedStatement query = DBManager.createInsertQuery("partecipazione", columnNames);
+            DBManager.setQueryParameters(query, panelManager.inputFields, columnNames, 1, 2);
+            DBManager.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
+        }catch(Exception e){
+           // Visualizza un messaggio di errore
+           JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO partecipazione (gara,vettura))\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("gara")+"', '"+
-                            inputData.get("vettura")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
-        } catch (SQLException e1) {
-            // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
-        }
-        System.out.println("Dati inseriti: " + inputData);
     }
 }

@@ -2,29 +2,41 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
 
 public class Button3 extends JPanel {
-    private Map<String, JTextField> inputFields;
+    PanelManager panelManager, panelAM, panelPRO;
+    //Rappresenta il nome delle colonne da inserire nel database
+    String[] columnNames = {"nome","cognome","datanascita","nazionalita","vettura","tipopilota","dataprimalicenza","nlicenze"};
     public Button3() {
-        super();
-        inputFields = new HashMap<>();
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        
+        /* Creazione di panelManager per l'inserimento dei dati comuni a tutti i piloti */
+        panelManager = new PanelManager();
+        panelManager.createInsertPanel(
+            "nome", PanelManager.getJTextField(),
+            "cognome", PanelManager.getJTextField(),
+            "datanascita", PanelManager.getJTextField(),
+            "nazionalita", PanelManager.getJTextField(),
+            "vettura", PanelManager.getJTextField(),
+            "tipopilota", PanelManager.getJComboBox("AM", "PRO")
+        );
+        /* ------------------ */
 
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        /* Creazione di panelAM per l'inserimento dei dati dei piloti AM */
+        panelAM = new PanelManager();
+        panelAM.createInsertPanel(
+            "dataprimalicenza", PanelManager.getJTextField()
+        );
+        /* ------------------ */
 
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"nome","cognome","datanascita","nazionalita","tipopilota","dataprimalicenza","nlicenze","vettura"};
-
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
-
-            add(label);
-            add(textField);
-        }
-
+        /* Creazione di panelPRO per l'inserimento dei dati dei piloti PRO */
+        panelPRO = new PanelManager();
+        panelPRO.createInsertPanel(
+            "nlicenze", PanelManager.getJTextField()
+        );
+        /* ------------------ */
+        
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -32,41 +44,66 @@ public class Button3 extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
 
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
+        /* Creazione di un totalPanel che conterrà tutti gli altri pannelli  */
+        JPanel totalPanel = new JPanel(new BorderLayout());
+        
+        /* Creazione di un listener sul JComboBox tipopilota  */
+        ((JComboBox<?>)panelManager.inputFields.get("tipopilota")).addItemListener(new ItemListener() {
+
+            //Quando il tipo del pilota cambia, deve cambiare il panel per l'inserimento dei giusti dati.
+            //I valori inseriti negli altri pannelli verranno resettati per evitare errori
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String x = (String)e.getItem();
+                totalPanel.removeAll();
+                totalPanel.add(panelManager,BorderLayout.NORTH);
+                if(x.equals("PRO")){
+                    totalPanel.add(panelPRO, BorderLayout.CENTER);
+                    panelAM.resetFields();
+                }else{
+                    totalPanel.add(panelAM, BorderLayout.CENTER);
+                    panelPRO.resetFields();
+                }
+                totalPanel.add(submitButton, BorderLayout.SOUTH);
+                totalPanel.setVisible(false);
+                totalPanel.setVisible(true);
+            }
+        });
+        /* ------------------ */
+
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Aggiunta di un nuovo pilota all'equipaggio");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        /* Aggiunta del titolo e dei vari pannelli a totalPanel */
+        panelManager.add(title, BorderLayout.NORTH);
+        totalPanel.add(panelManager,BorderLayout.NORTH);
+        totalPanel.add(panelAM, BorderLayout.CENTER);
+        totalPanel.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+
+        this.add(totalPanel);
     }
+
     
     private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
-        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
-            String columnName = entry.getKey();
-            Object value = entry.getValue().getText();
-            inputData.put(columnName, value);
-        }
         try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO pilota (nome,cognome,datanascita,nazionalita,tipopilota,dataprimalicenza,nlicenze,vettura)\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("nome")+"', '"+
-                            inputData.get("cognome")+"', '"+
-                            inputData.get("datanascita")+"', '"+
-                            inputData.get("datanascita")+"', '"+
-                            inputData.get("tipopilota")+"', '"+
-                            inputData.get("dataprimalicenza")+"', '"+
-                            inputData.get("nlicenze")+"', '"+
-                            inputData.get("vettura")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
-                }
-        } catch (SQLException e1) {
+            PreparedStatement query = DBManager.createInsertQuery("pilota", columnNames);
+            DBManager.setQueryParameters(query, panelManager.inputFields,columnNames, 1, 6);
+            DBManager.setQueryParameters(query, panelAM.inputFields,columnNames, 7, 7);
+            DBManager.setQueryParameters(query, panelPRO.inputFields,columnNames, 8, 8);
+            DBManager.executeUpdate(query);
+
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
+            panelAM.resetFields();
+            panelPRO.resetFields();
+        } catch (SQLException e) {
             // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("Dati inseriti: " + inputData);
     }
 }

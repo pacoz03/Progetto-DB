@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.GridLayout;
 import java.awt.event.*;
 
 public class MenuPanel extends JPanel {
     private JButton[] buttons = new JButton[15];
+    private JButton componentButton;
     private JPanel buttonsPanel, outputPanel;
     private JScrollPane buttonsScrollPane;
     
@@ -14,7 +16,7 @@ public class MenuPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         /*CREAZIONE SCROLLPANE PER I PULSANTI */
-        buttonsPanel = new JPanel(new GridLayout(15,1,5,5));
+        buttonsPanel = new JPanel(new GridLayout(16,1,5,5));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //aggiunta dei pulsanti al panel
@@ -24,22 +26,27 @@ public class MenuPanel extends JPanel {
             buttons[i].setPreferredSize(new Dimension(100,50));
             buttonsPanel.add(buttons[i]);
         }
+        componentButton = new JButton("InsertComponente");
+        componentButton.setPreferredSize(new Dimension(100,50));
+        buttonsPanel.add(componentButton);
         //istanziamento dello scrollpane e aggiunta del panel ad esso
         buttonsScrollPane = new JScrollPane(buttonsPanel);
         buttonsScrollPane.setPreferredSize(new Dimension(200,getHeight()));
         buttonsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        //Setting della velocità dello scrollbar verticale 
+        JScrollBar verticalScrollBar = buttonsScrollPane.getVerticalScrollBar();
+        verticalScrollBar.setUnitIncrement(20);
+        
         add(buttonsScrollPane,BorderLayout.WEST);
         /*FINE CREAZIONE SCROLLPANE PER PULSANTI */
         
         /*CREAZIONE PANEL DI OUTPUT */
         outputPanel = new JPanel(new BorderLayout());
-        
-        outputPanel.setBackground(Color.BLUE);
-        outputPanel.setOpaque(true);
         add(outputPanel);
         /*FINE CREAZIONE PANEL DI OUTPUT */
         
-        //ButtonN equivale a buttons[n-1]. es. Button1 = buttons[0]
+        //ButtonN equivale a buttons[N-1]. es. Button1 = buttons[0]
 
         //Button1
         buttons[0].addActionListener(new ActionListener() {
@@ -57,19 +64,27 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        //Button3
         buttons[2].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button3());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button3());
             }
         });
 
+        //Button4
         buttons[3].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button4());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button4());
+            }
+        });
+
+        //Button5
+        buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new Button5());
             }
         });
 
@@ -77,31 +92,39 @@ public class MenuPanel extends JPanel {
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addPanelToOutput(new Button6SelectGara());
+                addPanelToOutput(new Button6());
             }
         });
 
+        //Button7
+        buttons[6].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new Button7());
+            }
+        });
+
+        //Button8
         buttons[7].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button8());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button8());
             }
         });
 
+        //Button9
         buttons[8].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button9());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button9());
             }
         });
 
+        //Button10
         buttons[9].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button10());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button10());
             }
         });
 
@@ -113,42 +136,45 @@ public class MenuPanel extends JPanel {
             }
         });
 
+        //Button12
         buttons[11].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button12());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button12());
             }
         });
 
+        //Button13
         buttons[12].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button13());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button13());
             }
         });
 
+        //Button14
         buttons[13].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button14());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button14());
             }
         });
 
+        //Button15
         buttons[14].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane jop = new JOptionPane(new Button15());
-                jop.createDialog("Inserimeto dati").setVisible(true);
+                addPanelToOutput(new Button15());
             }
         });
 
-        
-
-
-        
+        //InsertComponent button
+        componentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addPanelToOutput(new InsertComponente());
+            }
+        });
     }
 
     private void addPanelToOutput(JPanel p)

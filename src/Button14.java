@@ -1,47 +1,45 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
 
 public class Button14 extends JPanel {
+    String[] tipiMotore = {"ASPIRATO", "TURBO"};
     public Button14() {
-        super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT ngara, punteggiototale, tipomotore\r\n" + //
+            String query = "SELECT ngara, punteggiototale, tipomotore\r\n" + //
                     "FROM vettura JOIN componente ON vettura.ngara = componente.vettura\r\n" + //
-                    "WHERE tipomotore = 'TURBO'\r\n" + //
-                    "ORDER BY punteggiototale DESC;");
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
-        }
+                    "WHERE tipomotore = ?\r\n" + //
+                    "ORDER BY punteggiototale DESC;";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            //Per ogni tipo di motore crea una classifica separata
+            for (String tipo : tipiMotore) {
+                preparedStatement.setString(1, tipo);
+                selectResult = DBManager.executeQuery(preparedStatement);
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Vettura", "Punteggio Totale, Tipo Motore"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-    
+                /* Creazione di panelManager per l'output dei dati in tabella */
+                PanelManager panelManager = new PanelManager();
+                panelManager.createOutputPanel(selectResult, new String[]{"vettura", "punteggio totale", "tipo motore"});
+                /* ------------------ */
+
+                panel.add(panelManager);
+            }
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
+        }
+        JLabel title = new JLabel("Stampa delle classifiche finali di punti per tipo di motore");
+        title.setFont(new Font("", Font.BOLD, 24));
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        this.add(title, BorderLayout.NORTH);
         this.add(scrollPane);
-
-
-        try {
-            selectResult = DBManager.executeQuery("SELECT ngara, punteggiototale, tipomotore\r\n" + //
-                    "FROM vettura JOIN componente ON vettura.ngara = componente.vettura\r\n" + //
-                    "WHERE tipomotore = 'ASPIRATO'\r\n" + //
-                    "ORDER BY punteggiototale DESC;");
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
-        }
-
-        data = DBManager.convertToObjectMatrix(selectResult);
-        col = new String[]{"Vettura", "Punteggio Totale, Tipo Motore"};
-        table = new JTable(data, col);
-        JScrollPane scrollPane1 = new JScrollPane(table);
-
-        this.add(scrollPane1);
-
     }
 }

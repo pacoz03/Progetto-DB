@@ -2,29 +2,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.*;
-
+import java.util.List;
+import java.util.Map;
 public class Button4 extends JPanel {
-    private Map<String, JTextField> inputFields;
+    PanelManager panelManager;
+    //Rappresenta il nome delle colonne da inserire nel database
+    private String[] columnNames = {"codice","quota","scuderia"};
     public Button4() {
-        super();
-        inputFields = new HashMap<>();
+        this.setLayout(new FlowLayout(FlowLayout.LEADING,10,10));
+        /* Creazione di panelManager per l'inserimento dei dati */
+        panelManager = new PanelManager();
+        panelManager.createInsertPanel(
+            "codice", PanelManager.getJTextField(),
+                       "quota", PanelManager.getJTextField(),
+                       "scuderia", PanelManager.getJTextField()
+        );
+        /* ------------------ */
 
-        setLayout(new GridLayout(11, 2, 10, 10));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
-        // Definisci la struttura della query SQL
-        String[] columnNames = {"codice","quota","scuderia"};
-
-        for (String columnName : columnNames) {
-            JLabel label = new JLabel(columnName + ":");
-            JTextField textField = new JTextField();
-            inputFields.put(columnName, textField);
-
-            add(label);
-            add(textField);
-        }
-
+        /* Creazione del bottone Submit */
         JButton submitButton = new JButton("Submit");
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -32,36 +27,71 @@ public class Button4 extends JPanel {
                 handleSubmit();
             }
         });
+        /* ------------------ */
 
-        add(new JLabel()); // Empty label as a filler
-        add(submitButton);
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Registrazione di un finanziamento per una scuderia");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        /* Aggiunta di titolo e del pulsante di submit a panelManager */
+        panelManager.add(title, BorderLayout.NORTH);
+        panelManager.add(submitButton, BorderLayout.SOUTH);
+        /* ------------------ */
+        
+        this.add(panelManager);
     }
     
+
+
     private void handleSubmit() {
-        // Esegui l'azione di invio dei dati
-        // Recupera i valori inseriti nei campi di input
-        Map<String, Object> inputData = new HashMap<>();
-        for (Map.Entry<String, JTextField> entry : inputFields.entrySet()) {
-            String columnName = entry.getKey();
-            Object value = entry.getValue().getText();
-            inputData.put(columnName, value);
-        }
+        
         try {
-            // Utilizza i valori recuperati per eseguire l'inserimento nel database
-            int result = DBManager.executeUpdate("INSERT INTO gentleman (codice,quota,scuderia))\r\n" + //
-                    "VALUES ('"+
-                            inputData.get("codice")+"', '"+
-                            inputData.get("quota")+"', '"+
-                            inputData.get("scuderia")+"')");
-                if (result == 1) {
-                    // Visualizza un messaggio di successo
-                    JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            List<Map<String, Object>> selectResult = null;
+            int totaleEquipaggio = 0, totaleGentleman = 0;
+            String query = "SELECT  COUNT(pilota.codice) AS totaleEquipaggio, COUNT(gentleman.codice) AS totaleGentleman\r\n" + //
+                            "FROM vettura JOIN pilota on pilota.vettura = vettura.ngara\n"+
+                            "LEFT JOIN gentleman on pilota.codice = gentleman.codice\n" +
+                            "WHERE vettura.ngara IN (SELECT ngara FROM pilota join vettura on pilota.vettura = vettura.ngara WHERE pilota.codice = ?)\n"+
+                            "GROUP BY ngara";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            
+            preparedStatement.setInt(1, Integer.parseInt(((JTextField)(panelManager.inputFields.get("codice"))).getText()));
+            selectResult = DBManager.executeQuery(preparedStatement);
+            //Se la select restituisce qualcosa (c'è almeno un pilota)
+            if(selectResult.size() > 0){
+                totaleEquipaggio = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleEquipaggio")));
+                //Se i campi della hashmap sono almeno 2 (esiste un gentleman nell'equipaggio)
+                if(selectResult.get(0).size() > 1){
+                    totaleGentleman = Integer.valueOf(String.valueOf(selectResult.get(0).get("totaleGentleman")));
+                }else{
+                    totaleGentleman = 0;
                 }
-        } catch (SQLException e1) {
-            // Visualizza un messaggio di errore
-            JOptionPane.showMessageDialog(this, "Errore durante l'inserimento", "Errore", JOptionPane.ERROR_MESSAGE);
-            e1.printStackTrace();
+            }else{
+                totaleEquipaggio = 0;
+                totaleGentleman = 0;
+            }
+
+            if(totaleEquipaggio - totaleGentleman <= 1){
+                JOptionPane.showMessageDialog(this, "Un equipaggio non può essere formato da soli Gentleman Driver", "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        
+        } catch (Exception e) {
+            //Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("Dati inseriti: " + inputData);
+
+        try {
+            PreparedStatement query = DBManager.createInsertQuery("gentleman", columnNames);
+            DBManager.setQueryParameters(query,panelManager.inputFields, columnNames, 1,3);
+            DBManager.executeUpdate(query);
+            
+            JOptionPane.showMessageDialog(this, "Inserimento riuscito", "Successo", JOptionPane.INFORMATION_MESSAGE);
+            panelManager.resetFields();
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

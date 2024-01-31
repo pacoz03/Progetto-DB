@@ -1,27 +1,35 @@
+import java.awt.BorderLayout;
+import java.awt.Font;
 import java.sql.*;
 import java.util.*;
 import javax.swing.*;
 
-
-
 public class Button9 extends JPanel {
     public Button9() {
-        super();
+        this.setLayout(new BorderLayout());
         List<Map<String, Object>> selectResult = null; // Inizializza selectResult a null
-        //Inserisci il risultato in selectResult
         try {
-            selectResult = DBManager.executeQuery("SELECT nome, sede, COUNT(gentleman.codice)\r\n" + //
+            String query = "SELECT nome, sede, COUNT(gentleman.codice)\r\n" + //
                     "FROM scuderia JOIN gentleman ON scuderia.nome = gentleman.scuderia\r\n" + //
-                    "GROUP BY nome, sede;");
-        } catch (SQLException e1) {
-            // TODO: handle exception
-            System.out.println(e1.getMessage());
+                    "GROUP BY nome, sede;";
+            PreparedStatement preparedStatement = DBManager.getConnection().prepareStatement(query);
+            selectResult = DBManager.executeQuery(preparedStatement);
+        } catch (SQLException e) {
+            // Visualizza un messaggio di errore
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRORE", JOptionPane.ERROR_MESSAGE);
         }
 
-        Object[][] data = DBManager.convertToObjectMatrix(selectResult);
-        String[] col = new String[]{"Scuderia", "Numero di Finanziamenti"};
-        JTable table = new JTable(data, col);
-        JScrollPane scrollPane = new JScrollPane(table);
-        this.add(scrollPane);
+        /* Creazione di panelManager per l'output dei dati in tabella */
+        PanelManager panelManager = new PanelManager();
+        panelManager.createOutputPanel(selectResult, new String[]{"nome", "sede", "Numero Gentleman"});
+        /* ------------------ */
+        
+        /* Label per il titolo del panel */
+        JLabel title = new JLabel("Stampa annuale delle scuderie che hanno partecipato al campionato compreso il numero di finanziamenti");
+        title.setFont(new Font("", Font.BOLD, 24));
+        /* ------------------ */
+        
+        panelManager.add(title, BorderLayout.NORTH);
+        this.add(panelManager);
     }
 }
